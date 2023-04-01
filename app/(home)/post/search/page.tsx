@@ -30,14 +30,21 @@ export default function SearchPost({ params }: { params: { slug: string } }) {
 
   const searchParam = useSearchParams();
 
+  let sQ =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("search_query");
+  let token =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
+
   const {
     data: searchData,
     isLoading,
     error,
   } = useGetRequest({
-    url: `${postsUrl}search/?q=${localStorage.getItem("search_query")}`,
+    url: `${postsUrl}search/?q=${sQ}`,
     useBearerToken: true,
-    bearerToken: localStorage.getItem("access_token") as string,
+    bearerToken: token as string,
   });
 
   const pageSize = 10;

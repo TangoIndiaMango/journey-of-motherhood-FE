@@ -27,7 +27,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // Save the user object to local storage whenever it changes
-    localStorage.setItem("user", JSON.stringify(user));
+    typeof window !== "undefined" &&
+      window.localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
   return (

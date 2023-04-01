@@ -25,7 +25,9 @@ interface Quote {
 const Home = () => {
   const router = useRouter();
   // const { accessToken } = useTokenContext();
-  const accessToken = localStorage.getItem("access_token");
+  const accessToken =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
 
   const { isLoading, error, data } = useGetUser({ accessToken });
 
@@ -33,7 +35,8 @@ const Home = () => {
 
   useEffect(() => {
     if (accessToken === null || accessToken === undefined) {
-      localStorage.setItem("previous_page", "/");
+      typeof window !== "undefined" &&
+        window.localStorage.setItem("previous_page", "/");
       router.replace("/login");
     }
   }, [accessToken, router]);
@@ -49,7 +52,7 @@ const Home = () => {
   } = useGetRequest<Quote[]>({
     url: getQuotesUrl,
     useBearerToken: true,
-    bearerToken: accessToken,
+    bearerToken: accessToken as string,
   });
 
   if (quoteError || error) {

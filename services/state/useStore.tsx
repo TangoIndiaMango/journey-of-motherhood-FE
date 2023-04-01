@@ -16,14 +16,16 @@ const reducer = (state: IState, action: IAction) => {
   const { type, payload } = action;
   switch (type) {
     case "addToken":
-      localStorage.setItem(
-        "access_token",
-        JSON.stringify(payload.access_token)
-      );
-      localStorage.setItem(
-        "refresh_token",
-        JSON.stringify(payload.refresh_token)
-      );
+      typeof window !== "undefined" &&
+        window.localStorage.setItem(
+          "access_token",
+          JSON.stringify(payload.access_token)
+        );
+      typeof window !== "undefined" &&
+        window.localStorage.setItem(
+          "refresh_token",
+          JSON.stringify(payload.refresh_token)
+        );
       return {
         token: payload,
       };
@@ -41,8 +43,12 @@ const Store = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    const access_token =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("access_token");
+    const refresh_token =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("refresh_token");
     const initToken: any = {
       access_token,
       refresh_token,

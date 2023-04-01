@@ -37,10 +37,20 @@ const Signin = () => {
 
       if (response.data) {
         toast.success("Login Successful!");
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("refresh_token", response.data.refresh_token);
+        typeof window !== "undefined" &&
+          window.localStorage.setItem(
+            "access_token",
+            response.data.access_token
+          );
+        typeof window !== "undefined" &&
+          window.localStorage.setItem(
+            "refresh_token",
+            response.data.refresh_token
+          );
         // Redirect to previous page or home page
-        const previousPage = localStorage.getItem("previous_page");
+        const previousPage =
+          typeof window !== "undefined" &&
+          window.localStorage.getItem("previous_page");
         if (previousPage) {
           // localStorage.removeItem("previous_page");
           router.push(previousPage);

@@ -9,7 +9,8 @@ const SearchComponent = ({ setToggleSearchMobile }: any) => {
 
   const onSearch = async (value: string) => {
     setSearchQuery(value);
-    localStorage.setItem("search_query", searchQuery);
+    typeof window !== "undefined" &&
+      window.localStorage.setItem("search_query", searchQuery);
     router.push(`/post/search?q=${value}`);
 
     if (setToggleSearchMobile) {

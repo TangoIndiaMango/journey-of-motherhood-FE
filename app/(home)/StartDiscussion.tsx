@@ -55,6 +55,10 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
     });
   };
 
+  let token =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     postRequest({
@@ -66,7 +70,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
         topic: data?.topic,
       },
       useBearerToken: true,
-      bearerToken: localStorage.getItem("access_token") as string,
+      bearerToken: token as string,
     });
   };
 

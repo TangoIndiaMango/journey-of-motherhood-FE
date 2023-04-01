@@ -6,12 +6,16 @@ import Signin from "./Signin";
 
 const Login = () => {
   const router = useRouter();
-  const accessToken = localStorage.getItem("access_token");
+  const accessToken =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
 
   //check if the access token is valid then redirect to previous page
   useEffect(() => {
     if (accessToken) {
-      const prevPage = localStorage.getItem("previous_page");
+      const prevPage =
+        typeof window !== "undefined" &&
+        window.localStorage.getItem("access_token");
       if (prevPage) router.replace(`${prevPage}`);
       else router.replace(`/`);
     }

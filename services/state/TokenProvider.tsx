@@ -33,8 +33,12 @@ export const TokenProvider = ({ children }: TokenProviderProps) => {
   const router = useRouter();
   // Get access token and refresh token from localStorage on initial render
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    const refreshToken = localStorage.getItem("refresh_token");
+    const accessToken =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("access_token");
+    const refreshToken =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("refresh_token");
     if (accessToken) {
       setAccessToken(accessToken);
     }
@@ -51,12 +55,16 @@ export const TokenProvider = ({ children }: TokenProviderProps) => {
           access_token: string;
           refresh_token: string;
         }>(refreshUrl, {
-          refresh: localStorage.getItem("refresh_token"),
+          refresh:
+            typeof window !== "undefined" &&
+            window.localStorage.getItem("refresh_token"),
         });
         setAccessToken(response?.data?.access);
         setRefreshToken(response?.data?.refresh);
-        localStorage.setItem("access_token", response?.data?.access);
-        localStorage.setItem("refresh_token", response?.data?.refresh);
+        typeof window !== "undefined" &&
+          window.localStorage.setItem("access_token", response?.data?.access);
+        typeof window !== "undefined" &&
+          window.localStorage.setItem("refresh_token", response?.data?.refresh);
       } catch (error: any) {
         if (error.message == "Request failed with status code 401") {
           toast.error("Opps! an Error occurred, redirecting to login");

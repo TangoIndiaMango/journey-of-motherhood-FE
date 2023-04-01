@@ -65,7 +65,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       refreshToken(refresh_token);
     }
     const intervalId = setInterval(() => {
-      const new_refresh_token = localStorage.getItem("refresh_token");
+      const new_refresh_token =
+        typeof window !== "undefined" &&
+        window.localStorage.getItem("refresh_token");
       if (new_refresh_token) {
         refreshToken(new_refresh_token);
       }
@@ -95,8 +97,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const data = await response.json();
         setAccessToken(data.access_token);
         setRefreshToken(data.refresh_token);
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("refresh_token", data.refresh_token);
+        typeof window !== "undefined" &&
+          window.localStorage.setItem("access_token", data.access_token);
+        typeof window !== "undefined" &&
+          window.localStorage.setItem("refresh_token", data.refresh_token);
         return response;
       } else {
         throw new Error("Failed to log in");
@@ -111,17 +115,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setAccessToken(null);
     setRefreshToken(null);
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    typeof window !== "undefined" &&
+      window.localStorage.removeItem("access_token");
+    typeof window !== "undefined" &&
+      window.localStorage.removeItem("refresh_token");
     router.replace("/login");
   };
 
   useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    const access_token =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("access_token");
+    const refresh_token =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("refresh_token");
     if (access_token) {
       setAccessToken(access_token);
-      setRefreshToken(refresh_token);
+      setRefreshToken(refresh_token as string);
     } else {
       router.replace("/login");
     }

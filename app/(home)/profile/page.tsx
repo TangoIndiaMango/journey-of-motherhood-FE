@@ -35,12 +35,15 @@ const Profile = () => {
   const onChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+  let token =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
 
   const onSubmit = (e: any) => {
     e.preventDefault();
     putRequest({
       useBearerToken: true,
-      bearerToken: localStorage.getItem("access_token") as string,
+      bearerToken: token as string,
       url: profileUrl + "edit/",
       query: {
         ...data,

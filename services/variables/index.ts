@@ -13,9 +13,10 @@ const validateDateOfBirth = (value: string) => {
 };
 
 const removeToken = () => {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
-  console.log("localStorage.removeItem");
+  typeof window !== "undefined" &&
+    window.localStorage.removeItem("access_token");
+  typeof window !== "undefined" &&
+    window.localStorage.removeItem("refresh_token");
 };
 
 function getRelativeTime(dateTimeString: string): string {
