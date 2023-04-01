@@ -2,7 +2,7 @@ import React from "react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 
-const CommentsComment = () => {
+const CommentsComment = ({ comment }: any) => {
   return (
     <div className="relative p-4">
       <span className="absolute left-3 top-4 flex flex-col gap-2 ">
@@ -22,12 +22,7 @@ const CommentsComment = () => {
           <h6 className="text-gray-600 text-[8px]">15hr ago</h6>
         </div>
 
-        <p className="text-[10px] my-3">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
-          asperiores consequuntur blanditiis quas repudiandae facilis nobis
-          dolore, eius earum, debitis aperiam mollitia, alias ducimus possimus!
-          Sint, perferendis. Placeat, repellendus neque!
-        </p>
+        <p className="text-[10px] my-3">{comment?.content}</p>
 
         <div className="flex justify-between items-center">
           <span className="flex items-center gap-2">

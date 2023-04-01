@@ -1,24 +1,34 @@
+import {
+  getRelativeTime,
+  intlFormat,
+  makeFriendly,
+} from "@/services/variables";
+import { Avatar } from "antd";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { BsChat, BsEyeFill } from "react-icons/bs";
 
-const ForumTopics = () => {
+const ForumTopics = ({ ...item }) => {
+  const router = useRouter();
   return (
-    <div className="card flex gap-2 border-b-[1px] border-l-gray-300 flex-col lg:flex-row">
-      <div className="flex items-center justify-between gap-4 ">
+    <div
+      className="card flex gap-2 border-b-[1px] border-l-gray-300 flex-col lg:flex-row"
+      onClick={() => router.push(`/post/${item.id}`)}
+    >
+      <div className="flex items-center justify-between gap-4 lg:w-[73%] ">
         <div className="w-11">
-          <div className="w-10 h-10 rounded-full bg-black"></div>
+          <Avatar className="grid place-content-center">
+            {item?.author?.first_name?.charAt(0)}
+          </Avatar>
         </div>
-        <div className="">
-          <h3 className="text-[var(--primaryColor)]">Divorce and Breakups</h3>
-          <p className="text-[10px]">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id,
-            laudantium.
-          </p>
+        <div className="justify-self-start  w-[80%]">
+          <h3 className="text-[var(--primaryColor)]">{item?.title}</h3>
+          <p className="text-[10px]">{item?.description}</p>
         </div>
         <div className="flex gap-2 ">
           <span className="">
             <BsEyeFill className="text-blue-500" />
-            <p className="text-xs mt-1">56.7k</p>
+            <p className="text-xs mt-1">{makeFriendly(Number(item?.views))}</p>
           </span>
           <span className="">
             <BsChat className="text-green-500" />
@@ -26,15 +36,15 @@ const ForumTopics = () => {
           </span>
         </div>
       </div>
-      <div className="lg:w-1/3 text-xs pl-11 lg:pl-0 mt-2 lg:mt-0">
+      <div className="lg:w-[23%] text-xs pl-11 lg:pl-3 mt-2 lg:mt-0 lg:border-l-gray-300 lg:border-l-[1px] lg:ml-3">
         <h4 className=" pl-2 font-bold">Recent Post</h4>
-        <div className="flex text-xs mt-2 px-2 lg:grid gap-2 w-full lg:border-l-[1px] lg:border-l-gray-300">
+        <div className="flex text-xs mt-2 px-2 lg:grid gap-2 w-full  items-center">
           <h3 className="text-[var(--primaryColor)] text-[9px] w-full">
             Lorem, ipsum dolor.
           </h3>
-          <div className="flex items-center gap-2 w-full text-right">
-            <h6 className="text-[7px]">12 mins ago</h6>
-            <div className="w-5 h-5 rounded-full bg-black"></div>
+          <div className="flex items-center gap-2 w-full text-left">
+            <h6 className="text-[7px]">{getRelativeTime(item?.created_at)}</h6>
+            <Avatar className="w-6 h-6"></Avatar>
           </div>
         </div>
       </div>

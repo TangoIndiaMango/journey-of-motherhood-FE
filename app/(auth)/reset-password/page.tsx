@@ -1,5 +1,5 @@
+import AuthLayout from "@/app/AuthLayout";
 import React from "react";
-import AuthLayout from "../AuthLayout";
 
 const ResetPassword = () => {
   return <AuthLayout password />;

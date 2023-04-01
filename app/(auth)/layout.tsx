@@ -1,8 +1,8 @@
-import "./globals.css";
+import "../globals.css";
 
 export const metadata = {
-  title: "Motherhood-Journey",
-  description: "An a experience of Motherhood Journey",
+  title: "Motherhood-Journey ",
+  description: "An a experience of Motherhood Journey Auth Page",
 };
 
 export default function RootLayout({

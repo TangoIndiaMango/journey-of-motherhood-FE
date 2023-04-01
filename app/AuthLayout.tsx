@@ -3,28 +3,51 @@
 import Link from "next/link";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import AuthCarousel from "./AuthCarousel";
-import { useState } from "react";
-const AuthLayout = ({ login = false, signup = false, password = false }) => {
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import Input from "../components/Input";
+import { loginUrl, registerUrl } from "../services/utils/url";
+
+import { FormData } from "@/services/constants/types";
+import { passwordPattern } from "@/services/variables";
+import axios from "axios";
+
+const AuthLayout = ({ loginApp = false, signup = false, password = false }) => {
+  const router = useRouter();
   const signPassword = signup || password;
-  const [passwordType, setPasswordType] = useState("password");
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const watchPassword = watch("password", "");
+  const validateConfirmPassword = (value: string) => {
+    if (value !== watchPassword) {
+      return "Passwords do not match";
+    }
+  };
+
+  const onSubmit = async (data: FormData) => {};
 
   return (
     <section className="flex flex-col h-screen md:flex-row-reverse">
       <AuthCarousel />
-      <div className="px-14 py-20 relative bg-[var(--bgColor)] h-2/3 md:h-screen md:w-2/3 md:px-30 md:grid place-content-center">
-        <BsArrowLeftShort className="text-2xl absolute top-12 left-8" />
-        <div className="text-center flex flex-col items-center gap-4">
-          {password ? (
-            <h3 className="text-xl font-extrabold">Reset password</h3>
-          ) : (
-            <h3 className="text-xl font-extrabold">
-              Welcome {login && "Back"}!
-            </h3>
-          )}
 
-          <p>
+      <div className="px-10 py-10 md:py-20 relative bg-[var(--bgColor)] h-3/4 md:h-screen md:w-2/3 md:px-30 md:grid place-content-center ">
+        <BsArrowLeftShort
+          className="text-2xl absolute top-5 left-8 cursor-pointer"
+          onClick={() => router.push("/")}
+        />
+        <div className="text-center flex flex-col items-center gap-4">
+          <h3 className="text-xl font-extrabold">Reset password</h3>
+
+          <p className="">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,
             illo!
           </p>
@@ -32,98 +55,63 @@ const AuthLayout = ({ login = false, signup = false, password = false }) => {
             <div className="my-4"></div>
           ) : (
             <>
-              <span className="cursor-pointer border-[1px] border-gray-400 flex h-max items-center px-2 py-1 gap-3 w-fit rounded-2xl my-4">
+              <span className="cursor-pointer border-[1px] border-gray-400 flex h-max items-center px-2 py-1 gap-3 w-fit rounded-2xl mt-2">
                 <FcGoogle />
                 <h6 className="text-[12px] font-bold">
-                  {login && "Log in"} {signup && "Sign up"} with Google
+                  {loginApp && "Log in"} {signup && "Sign up"} with Google
                 </h6>
               </span>
-              <p className="mb-6">or</p>
+              <p className="mb-2 md:mb-6">or</p>
             </>
           )}
         </div>
-        <form className="flex flex-col gap-6">
-          {login && (
-            <div className="inputContainer">
-              <input
-                type="text"
-                placeholder="Email"
-                className="w-full outline-none"
-              />
-            </div>
-          )}
-          <div className="inputContainer flex h-full justify-between items-center">
-            <input
-              type={passwordType}
-              name=""
-              id=""
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-4 ">
+            <Input
+              register={register}
+              passwordTrigger={true}
+              type="password"
               placeholder="Password"
-              className="w-full outline-none"
+              name="password"
+              required
+              error={errors.password}
+              requirements={{
+                required: true,
+                pattern: {
+                  value: passwordPattern,
+                  message:
+                    "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number",
+                },
+              }}
             />
-            {passwordType == "name" ? (
-              <FiEye
-                className="text-gray-600"
-                onClick={() => setPasswordType("password")}
-              />
-            ) : (
-              <FiEyeOff
-                className="text-gray-600"
-                onClick={() => setPasswordType("name")}
-              />
-            )}
+
+            <Input
+              register={register}
+              passwordTrigger={true}
+              watch={watch}
+              type="password"
+              placeholder="Confirm Password"
+              name="confirm_password"
+              required
+              error={errors.confirm_password}
+              requirements={{
+                required: true,
+                validate: validateConfirmPassword,
+              }}
+            />
           </div>
-          {signPassword && (
-            <div className="inputContainer flex h-full justify-between items-center">
-              <input
-                type={passwordType}
-                name=""
-                id=""
-                placeholder="Confirm password"
-                className="w-full outline-none"
-              />
-              {passwordType == "name" ? (
-                <FiEye
-                  className="text-gray-600"
-                  onClick={() => setPasswordType("password")}
-                />
-              ) : (
-                <FiEyeOff
-                  className="text-gray-600"
-                  onClick={() => setPasswordType("name")}
-                />
-              )}
-            </div>
-          )}
-          {login && (
-            <div className="text-[12px] text-gray-600 flex h-full justify-between items-center my-2">
-              <span className=" flex h-full items-center  gap-3">
-                <input
-                  type="checkbox"
-                  name=""
-                  id="remember"
-                  className=" border-gray-100 accent-[var(--primaryColor)] cursor-pointer "
-                />{" "}
-                <label htmlFor="remember">Remember for 30 days</label>
-              </span>
-              <Link href={"/reset-password"} className="underline">
-                Forget password
-              </Link>
-            </div>
-          )}
-          <button>
-            {login && "Log in"} {signup && "Sign up"}{" "}
-            {password && "Reset Password"}
+
+          <button type="submit" className="button">
+            <>{password && "Reset Password"}</>
           </button>
           <div className="text-[12px] text-gray-600 flex justify-center w-4/5 mx-auto gap-4 h-full items-center">
-            <p>
-              {login && "Don't"} {signup && "Already"} have an account?
-            </p>
-            <a
-              href={login ? "/signup" : "/login"}
+            <p>{"Already"} have an account?</p>
+            <Link
+              href={loginApp ? "/signup" : "/login"}
               className="text-black font-bold"
             >
-              {!login && "Log in"} {!signPassword && "Sign up"}
-            </a>
+              {"Log in"}
+            </Link>
           </div>
         </form>
       </div>

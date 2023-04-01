@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -14,7 +14,7 @@
   --bgColor: #f9f2f5;
 
   /* font-family */
-  --primaryFont: "Montserrat", sans-serif;
+  --primaryFont: "Lato", sans-serif;
 }
 
 @layer components {
@@ -29,11 +29,12 @@
   }
 
   .inputContainer {
-    @apply bg-white shadow-md px-3 py-2 text-xs text-black font-bold rounded-md relative;
+    @apply bg-white shadow-sm px-3 py-3 text-xs text-black font-bold rounded-md relative ring-1 ring-slate-900/5;
   }
 
+  .button,
   button {
-    @apply text-sm bg-[var(--primaryColor)] w-full py-2 rounded-md hover:bg-[#a71d60] text-white;
+    @apply text-sm bg-[var(--primaryColor)] w-full py-3 rounded-md hover:bg-[#a71d60] text-white;
   }
   .asideActive {
     @apply bg-[#EDD5E1] border-l-[var(--primaryColor)] border-l-[5px];

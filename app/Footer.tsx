@@ -20,8 +20,8 @@ const Footer = () => {
     <footer className="p-10 bg-black text-white w-full">
       <div className="flex items-start justify-between flex-col md:flex-row">
         <div className="">
-          <h4 className="text-sm ">Stay in the loop</h4>
-          <p className="text-[10px] font-light text-white  md:w-[100%] mb-3">
+          <h4 className="text-[16px] font-bold">Stay in the loop</h4>
+          <p className="text-[12px] font-light text-white  md:w-[100%] mb-3">
             Be the first to know about upcoming events
           </p>
         </div>
@@ -33,22 +33,22 @@ const Footer = () => {
           />
           <button
             type="submit"
-            className="text-xs bg-[var(--primaryColor)] px-4 rounded-none"
+            className="text-xs bg-[var(--primaryColor)] px-4 rounded-none min-w-[150px]"
           >
             Submit
           </button>
         </form>
       </div>
 
-      <div className="my-10 flex justify-between flex-wrap">
+      <div className="my-10 flex flex-wrap gap-12 md:justify-between">
         {data.map((d, i) => (
           <div className="flex flex-col gap-2 my-4" key={`${d} + ${i}`}>
-            <h6 className="text-[10px] text-gray-300">{d.title}</h6>
+            <h6 className="text-[12px] text-gray-300">{d.title}</h6>
             {d.links.map((link) => (
               <Link
                 key={link}
                 href={"#"}
-                className="text-[10px] transition ease-in-out hover:text-gray-300"
+                className="text-[12px] transition ease-in-out hover:text-gray-300"
               >
                 {link}
               </Link>

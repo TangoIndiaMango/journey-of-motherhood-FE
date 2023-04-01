@@ -1,19 +1,110 @@
 "use client";
 import React, { useState } from "react";
+import usePostRequest from "../../hooks/usePostRequests";
+import { Spin } from "antd";
+import { Toaster, toast } from "react-hot-toast";
+import { postsUrl } from "@/services/utils/url";
+import { useRouter } from "next/navigation";
+
+interface IData {
+  title: string;
+  description: string;
+  tags: string;
+  topic: string;
+  check: boolean;
+}
+
+const initialState: IData = {
+  title: "",
+  description: "",
+  tags: "",
+  topic: "",
+  check: false,
+};
+
+const optionsValue = [
+  "DIV",
+  "REL",
+  "OCC",
+  "PRE",
+  "MAR",
+  "INT",
+  "WED",
+  "NEW",
+  "SIN",
+  "TTC",
+  "SPI",
+  "HEA",
+  "FAS",
+  "PAR",
+  "SOC",
+  "AID",
+  "DIY",
+];
 
 export const StartDiscussion = ({ setStartDiscussion }: any) => {
-  const [data, setData] = useState(false);
+  const router = useRouter();
+  const [data, setData] = useState(initialState);
+  const { data: response, error, isLoading, postRequest } = usePostRequest();
+
+  const handleChange = (e: any) => {
+    setData({
+      ...data,
+      [e.target.name]:
+        e.target == "checked" ? e.target.checked : e.target.value,
+    });
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    postRequest({
+      url: postsUrl + "create/",
+      query: {
+        title: data?.title,
+        description: data?.description,
+        tags: data?.tags,
+        topic: data?.topic,
+      },
+      useBearerToken: true,
+      bearerToken: localStorage.getItem("access_token") as string,
+    });
+  };
+
+  if (response) {
+    toast.success("Post created successfully");
+    router.push("/");
+  }
+
+  if (error) {
+    toast.error("Opps! an error occurred, please try again");
+  }
+
   return (
-    <form>
+    <form
+      className="py-10 w-full  lg:mt-14 lg:w-[75%] lg:mx-auto"
+      onSubmit={handleSubmit}
+    >
+      <Toaster />
       <div className="w-full">
         <input
           type="text"
           placeholder="Add a title"
-          className="w-full px-4 py-2 text-xs"
+          className="w-full px-4 py-2 text-[12px]"
+          name="title"
+          value={data.title}
+          onChange={handleChange}
+          required
         />
         <h6 className="text-xs my-4 text-gray-500 text-right">0/12</h6>
       </div>
-      <div className="card h-56 my-4"></div>
+      <textarea
+        id=""
+        required
+        className="h-40 w-full mb-4 px-4 py-2 text-[12px]"
+        name="description"
+        value={data.description}
+        onChange={handleChange}
+      ></textarea>
       <div className="">
         <h5 className="text-sm font-bold">
           Tags{" "}
@@ -25,21 +116,35 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
           <div className="flex items-center gap-4">
             <input
               type="text"
+              required
               placeholder="Add tags"
-              className="w-min-[150px] px-2 py-2 text-xs"
+              className="w-min-full px-2 py-2 text-[12px]"
+              name="tags"
+              value={data.tags}
+              onChange={handleChange}
             />
-            <select name="" id="" className="w-full px-2 py-2 text-xs">
+            <select
+              name="topic"
+              required
+              value={data.topic}
+              onChange={handleChange}
+              id=""
+              className="w-full px-2 py-2 text-xs"
+            >
               <option value="">Select a top</option>
-              <option value="divorve">Divorce</option>
-              <option value="breastfeeding">Breastfeeding</option>
+              {optionsValue.map((value, index) => (
+                <option value={value} key={`${value}-${index}`}>
+                  {value}
+                </option>
+              ))}
             </select>
           </div>
           <div className="hidden md:block">
             <button
-              className="text-xs p-2 px-4 rounded-none"
-              onClick={() => setStartDiscussion(false)}
+              className="text-xs p-2 px-4 rounded-none bg-[var(--primaryColor)] isabled:cursor-not-allowed disabled:bg-gray-500"
+              type="submit"
             >
-              Publish post
+              Publish post {""} {isLoading && <Spin />}
             </button>
           </div>
         </div>
@@ -48,7 +153,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
           <div className="flex items-center gap-4">
             <input
               type="text"
-              placeholder="Add tags"
+              placeholder=""
               className=" px-2 py-2 text-xs w-min-[150px]"
             />
 
@@ -61,15 +166,22 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
                 type="checkbox"
                 role="switch"
                 id="flexSwitchChecked"
-                checked={data}
-                onChange={() => setData((prev) => !prev)}
+                name="check"
+                checked={data.check ? true : false}
+                onChange={handleChange}
               />
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-8">
-        <button className="text-xs p-2 px-4 rounded-none">Publish post</button>
+      <div className="mt-8 md:hidden">
+        <button
+          className="text-xs p-2 px-4 rounded-none bg-[var(--primaryColor)] disabled:cursor-not-allowed disabled:bg-gray-500"
+          type="submit"
+          disabled={isLoading}
+        >
+          Publish post {""} {isLoading && <Spin />}
+        </button>
       </div>
     </form>
   );

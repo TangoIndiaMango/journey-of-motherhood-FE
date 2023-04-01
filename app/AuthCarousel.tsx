@@ -47,7 +47,7 @@ const AuthCarousel = () => {
       style={{
         backgroundImage: `url(${data[active].src})`,
       }}
-      className={`h-1/3 w-full bg-cover bg-center bg-no-repeat bg-gray-600 relative transition ease-in-out md:h-screen md:w-1/2`}
+      className={`h-1/6  w-full bg-cover bg-center bg-no-repeat bg-gray-600 relative transition ease-in-out md:h-screen md:w-1/2`}
     >
       <div className="flex gap-2 absolute bottom-10 left-1/2 -translate-x-1/2">
         {dots}

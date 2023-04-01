@@ -1,7 +1,10 @@
+"use client";
+
 import { BsArrowUp, BsPlus } from "react-icons/bs";
-import TopUsers from "./TopUsers";
+import TopUsers from "../TopUsers";
 import Link from "next/link";
-import SlugContent from "./SlugContent";
+import SlugContent from "../SlugContent";
+import { usePathname } from "next/navigation";
 const data = [
   "Help",
   "About",
@@ -15,9 +18,11 @@ const data = [
 ];
 
 export default function Page({ params }: { params: { slug: string } }) {
+  const pathname = usePathname();
+
   return (
-    <section className="m-10 md:grid grid-cols-3 gap-4 md:mx-0 md:px-5 ">
-      <div className="md:col-span-2">
+    <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+      <div className="lg:w-3/4">
         <SlugContent />
         <SlugContent />
         <SlugContent />
@@ -26,7 +31,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         <SlugContent />
         <SlugContent />
       </div>
-      <div className="col-span-1 md:grid gap-4 h-fit hidden ">
+      <div className="lg:w-1/4 lg:grid gap-8 h-fit hidden ">
         <button className="flex items-center gap-2 justify-center  px-4">
           <BsPlus className="text-white text-xl" />
           <span className="text-xs">Start a discussion</span>
