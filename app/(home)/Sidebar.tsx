@@ -19,10 +19,10 @@ const Sidebar = ({ setOpenMenu, openMenu }: any) => {
   const { user } = useUser();
   return (
     <aside
-      className={`flex flex-col fixed left-0 top-0 w-full h-[calc(100vh)] z-10 bg-[var(--bgColor)] px-10 py-10 lg:w-1/5 lg:sticky lg:top-10 lg:h-[100vh_-_80px]`}
+      className={`flex flex-col fixed left-0 top-0 w-full h-[calc(100vh)] z-10 bg-[var(--bgColor)] px-10 py-10 lg:w-1/5 lg:sticky lg:top-10 lg:min-h-[100vh_-_60px]`}
     >
       <BsX
-        className="text-red-500 absolute right-10 top-5 text-3xl cursor-pointer md:hidden"
+        className="text-red-500 absolute right-10 top-10 text-3xl cursor-pointer md:hidden"
         onClick={() => setOpenMenu(false)}
       />
       <nav className="flex flex-col gap-3 ">
@@ -46,12 +46,14 @@ const Sidebar = ({ setOpenMenu, openMenu }: any) => {
         </Link>
       </nav>
       <PinnedTopics closeMenu={closeMenu} />
-      <div className="absolute left-10 bottom-16 flex items-center gap-3 md:hidden">
-        <Avatar>{user?.first_name?.charAt(0)}</Avatar>
-        <h5>
-          {user?.first_name} {user?.last_name}
-        </h5>
-      </div>
+      {/* {user && (
+        <div className="absolute left-10 bottom-16 flex items-center gap-3 md:hidden">
+          <Avatar>{user.first_name?.charAt(0)}</Avatar>
+          <h5>
+            {user.first_name} {user?.last_name}
+          </h5>
+        </div>
+      )} */}
     </aside>
   );
 };

@@ -5,11 +5,14 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SlugContent from "../../SlugContent";
 import TopUsers from "../../TopUsers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetRequest from "@/hooks/useGetRequest";
-import { postsUrl } from "@/services/utils/url";
+import { getTopUsersUrl, postsUrl } from "@/services/utils/url";
 import { Spin } from "antd";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
+// import { useSearch } from "@/services/state/SearchProvider";
+import { useQuery } from "react-query";
+import axios from "axios";
 const data = [
   "Help",
   "About",
@@ -22,37 +25,60 @@ const data = [
   "Privacy policy",
 ];
 
-export default function SearchPost({ params }: { params: { slug: string } }) {
+export interface ITopUser {
+  date_of_birth: string;
+  email: string;
+  first_name: string;
+  gender: string;
+  id: number;
+  last_name: string;
+}
+
+export default function SearchPost({
+  searchParam,
+}: {
+  [key: string]: string | string[] | undefined;
+}) {
   const [page, setPage] = useState(0);
+  // const { searchValue } = useSearch();
   const router = useRouter();
-
-  const pathname = usePathname();
-
-  const searchParam = useSearchParams();
-
-  let sQ =
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("search_query");
-  let token =
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("access_token");
+  const searchQuery = useSearchParams();
+  const searchValue = searchQuery.get("q");
+  // console.log(searchQuery.get("q"));
 
   const {
-    data: searchData,
+    data: results,
     isLoading,
-    error,
-  } = useGetRequest({
-    url: `${postsUrl}search/?q=${sQ}`,
-    useBearerToken: true,
-    bearerToken: token as string,
+    isError,
+  } = useQuery(["searchResults", searchValue], async () => {
+    if (searchValue) {
+      const response = await axios.get(`${postsUrl}search/?q=${searchValue}`);
+      return response.data;
+    }
   });
 
+  const {
+    data: topUsersData,
+    isLoading: topUsersLoading,
+    isError: topUsersError,
+  } = useQuery(["topUsersResult"], async () => {
+    const response = await axios.get(getTopUsersUrl);
+    return response?.data;
+  });
+
+  if (topUsersError) console.log(topUsersError);
   const pageSize = 10;
 
   const startIndex = page * pageSize;
-  const paginatedItems = searchData?.slice(startIndex, startIndex + pageSize);
+  const paginatedItems = results?.slice(startIndex, startIndex + pageSize);
 
-  const totalPages = Math.ceil(searchData?.length / pageSize);
+  const totalPages = Math.ceil(results?.length / pageSize);
+
+  // if (topUsersError || isError) {
+  //   console.log(topUsersError || isError);
+  //   toast.error("an error occurred");
+  //   return;
+  // }
 
   if (isLoading)
     return (
@@ -61,11 +87,20 @@ export default function SearchPost({ params }: { params: { slug: string } }) {
       </div>
     );
 
-  if (error) return <>Sorry an error occured</>;
+  if (!results || results.length < 1) {
+    return (
+      <section className="my-10 mx-5 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+        <h2 className="text-sm">
+          Sorry! no result for this topic, please try other topics
+        </h2>
+      </section>
+    );
+  }
 
   return (
-    <section className="my-5 mx-5 lg:flex gap-8 lg:mx-0 lg:px-8 ">
-      <div className="lg:w-3/4">
+    <section className="my-5 mx-5 flex flex-col lg:flex-row gap-8 lg:mx-0 lg:px-8 ">
+      <Toaster />
+      <div className="w-full lg:w-3/4">
         <>
           {paginatedItems?.map((item: any) => (
             <SlugContent key={item?.id} item={item} />
@@ -91,30 +126,35 @@ export default function SearchPost({ params }: { params: { slug: string } }) {
           )}
         </>
       </div>
-      <div className="lg:w-1/4 lg:grid gap-8 h-fit hidden ">
+      <div className="w-full lg:w-1/4 grid gap-4 h-fit  ">
         <button
           className="flex items-center gap-2 justify-center  px-4"
           onClick={() => router.push("/post/new-discussion")}
         >
-          <BsPlus className="text-white text-xl" />
+          <BsPlus className="text-white text-xl " />
           <span className="text-xs">Start a discussion</span>
         </button>
 
         <div className="card">
           <h4 className="font-bold text-sm mb-5">Top Users</h4>
           <div className="pb-4">
-            <TopUsers />
-            <TopUsers />
-            <TopUsers />
-            <TopUsers />
-            <TopUsers />
-            <TopUsers />
+            {topUsersLoading ? (
+              <Spin />
+            ) : (
+              <>
+                {topUsersData && topUsersData.length < 1
+                  ? "Opps! No Trending Topics Available"
+                  : topUsersData.map((topUser: ITopUser) => {
+                      return <TopUsers key={topUser.id} {...topUser} />;
+                    })}
+              </>
+            )}
           </div>
-          <div className="border-t-[1px] border-gray-400">
-            <TopUsers name="You" />
-          </div>
+          {/* <div className="border-t-[1px] border-gray-400">
+            <TopUsers />
+          </div> */}
         </div>
-        <div className="card grid grid-cols-2 gap-4 ">
+        {/* <div className="card grid grid-cols-2 gap-4 ">
           {data.map((d: string, i: number) => (
             <Link
               href={d}
@@ -126,7 +166,7 @@ export default function SearchPost({ params }: { params: { slug: string } }) {
               {d}
             </Link>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

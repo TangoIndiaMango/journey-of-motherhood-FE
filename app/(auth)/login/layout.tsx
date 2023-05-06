@@ -15,7 +15,7 @@ export default function LoginLayout({
   return (
     <TokenProvider>
       <UserProvider>
-        <main className="h-screen w-full">{children}</main>
+        <section className="h-screen w-full">{children}</section>
       </UserProvider>
     </TokenProvider>
   );

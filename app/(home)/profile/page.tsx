@@ -6,6 +6,8 @@ import { useTokenContext } from "@/services/state/TokenProvider";
 import { useUser } from "@/services/state/useUser";
 import { profileUrl } from "@/services/utils/url";
 import { Spin } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -20,6 +22,7 @@ export interface ProfileData {
 }
 
 const Profile = () => {
+  const router = useRouter();
   const { user, setUser } = useUser();
   const { putRequest, isLoading, error, data: response } = usePutRequest();
 
@@ -72,12 +75,34 @@ const Profile = () => {
     toast.success("Profile updated successfully!");
   }
 
+  if (!user)
+    return (
+      <div className="h-[60vh] w-full grid place-content-center">
+        <div className="w-1/2">
+          <h1 className="text-xl p-14 text-red-500 w-[40ch]">
+            Opps, You are not a logged in user Please, login to access your
+            Profile
+            <Link
+              href={"/login"}
+              className=" mx-2 text-sm text-blue-600 hover:underline text-center"
+            >
+              login
+            </Link>
+          </h1>
+        </div>
+      </div>
+    );
+
   return (
     <section className="p-10 lg:flex  gap-4 lg:pt-20 lg:gap-10">
       <div className="text-center flex items-center w-full mt-4 lg:mt-0 flex-col gap-3 lg:w-1/2 lg:px-8 lg:border-r-[1px] lg:border-r-gray-600">
-        <div className="w-28 h-28 rounded-full bg-black"></div>
-        <h4 className="text-[14px] text-black font-bold lg:mt-3 lg:mb-12">
-          {data?.first_name.toUpperCase()}
+        <div className="w-28 h-28 rounded-full bg-gray-300 grid place-content-center text-2xl">
+          {data?.first_name.toUpperCase().charAt(0) +
+            data?.last_name.toUpperCase().charAt(0)}
+        </div>
+        <h4 className="text-[14px] text-black flex gap-1 flex-wrap font-bold lg:mt-3 lg:mb-12">
+          <span>{data?.first_name.toUpperCase()}</span>
+          <span>{data?.last_name.toUpperCase()}</span>
         </h4>
         <div className="flex gap-4">
           <div className="px-4 flex text-[14px] gap-2 font-bold flex-col border-r-[1px] border-r-gray-300">
@@ -134,7 +159,7 @@ const Profile = () => {
               className={`px-2 py-2 text-[12px] disabled:bg-gray-200 disabled:cursor-not-allowed`}
               value={data?.email}
               onChange={onChange}
-              disabled={allowEdit}
+              disabled={true}
             />
           </div>
           <div className="grid gap-2 my-4 lg:gap-4">
@@ -151,12 +176,12 @@ const Profile = () => {
             ></textarea>
           </div>
 
-          <div className="grid gap-2 my-4 lg:gap-4">
+          <div className="grid gap-2 my-4 lg:gap-6">
             <div className="flex justify-between items-center my-2">
-              <label className="text-[12px] font-bold">Security</label>
+              {/* <label className="text-[12px] font-bold">Security</label> */}
               <button
                 type="button"
-                className="w-fit text-[12px] px-10 py-1 bg-[var(--primaryColor)]"
+                className="w-full text-[12px] px-10 py-2 bg-[var(--primaryColor)]"
                 onClick={() => setAllowEdit(!allowEdit)}
               >
                 {allowEdit ? "Enable" : "Disable"} Editing

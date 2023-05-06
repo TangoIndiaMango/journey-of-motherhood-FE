@@ -5,6 +5,10 @@ import TopUsers from "../TopUsers";
 import Link from "next/link";
 import SlugContent from "../SlugContent";
 import { usePathname } from "next/navigation";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { getTopUsersUrl } from "@/services/utils/url";
+import { Toaster, toast } from "react-hot-toast";
 const data = [
   "Help",
   "About",
@@ -22,6 +26,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+      <Toaster />
       <div className="lg:w-3/4">
         <SlugContent />
         <SlugContent />

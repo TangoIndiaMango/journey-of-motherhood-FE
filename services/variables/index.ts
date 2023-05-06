@@ -19,6 +19,10 @@ const removeToken = () => {
     window.localStorage.removeItem("refresh_token");
 };
 
+const clearLocalStorage = () => {
+  typeof window !== "undefined" && window.localStorage.clear();
+};
+
 function getRelativeTime(dateTimeString: string): string {
   const now = new Date();
   const dateTime = new Date(dateTimeString);
@@ -53,6 +57,12 @@ function makeFriendly(num: number) {
   return intlFormat(num);
 }
 
+const getInitials = (firstName: string, lastName: string) => {
+  return String(
+    firstName.toUpperCase().charAt(0) + lastName.toUpperCase().charAt(0)
+  );
+};
+
 export {
   passwordPattern,
   emailPattern,
@@ -61,4 +71,6 @@ export {
   getRelativeTime,
   intlFormat,
   makeFriendly,
+  clearLocalStorage,
+  getInitials,
 };

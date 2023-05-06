@@ -6,34 +6,49 @@ import { BsChat, BsEye } from "react-icons/bs";
 import HashTagComponent from "../HashTags";
 import { getRelativeTime, makeFriendly } from "@/services/variables";
 import { useRouter } from "next/navigation";
+import { usePost } from "@/services/state/PostProvider";
 
 const SlugContent = ({ item }: any) => {
   const router = useRouter();
+  const { setPostValue } = usePost();
   return (
     <div
       className="card flex justify-between border-b-[1px] border-b-gray-300 cursor-pointer gap-2"
-      onClick={() => router.push(`/post/${item?.id}`)}
+      onClick={() => {
+        router.push(`/post/${item.id}`);
+        setPostValue(item);
+      }}
     >
       <div className="flex gap-2">
         <div className="w-fit">
-          <Avatar>{item?.author?.first_name?.charAt(0)}</Avatar>
+          <Avatar>
+            {item?.user
+              ? String(
+                  item?.user?.first_name?.charAt(0) +
+                    item?.user?.last_name?.charAt(0)
+                ).toUpperCase()
+              : "ANO"}
+          </Avatar>
         </div>
         <div className="">
           <h4 className="text-sm font-bold">{item?.title}</h4>
           <h5 className="text-gray-500 text-[10px]">
-            by {item?.author?.first_name} {""} {item?.author?.last_name}
+            by{" "}
+            {item?.user
+              ? item?.user?.first_name + "" + item?.user?.last_name
+              : "ANO"}
           </h5>
-          <div className="flex gap-4 text-gray-500 my-2">
-            <div className="flex items-center ">
+          <div className="flex gap-1 text-gray-500 my-2 flex-col lg:flex-row lg:gap-2">
+            <div className="flex items-center h-fit gap-1">
               <BsEye /> <span className="text-[10px]">Views</span>{" "}
-              <span className="text-[10px]">{makeFriendly(item?.views)}</span>
+              <span className="text-[11px]">{makeFriendly(item?.views)}</span>
             </div>
-            <div className="flex items-center gap-2 ">
+            {/* <div className="flex items-center gap-1 ">
               <BsChat /> <span className="text-[10px]">Comments</span>{" "}
-              <span className="text-[10px]">121,197</span>
-            </div>
+              <span className="text-[11px]">121,197</span>
+            </div> */}
           </div>
-          <div className="flex gap-2 item-center mt-4 w-[90%]">
+          <div className="flex gap-2 item-center mt-2 w-[90%]">
             <HashTagComponent tags={item?.tags} />
           </div>
         </div>

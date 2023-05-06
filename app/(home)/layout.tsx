@@ -7,6 +7,17 @@ import Sidebar from "./Sidebar";
 import UserProvider from "@/services/state/useUser";
 import { TokenProvider } from "@/services/state/TokenProvider";
 import "../globals.css";
+import SearchProvider from "@/services/state/SearchProvider";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import PostProvider from "@/services/state/PostProvider";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true, // default: true
+    },
+  },
+});
 
 export default function HomeLayout({
   children,
@@ -32,27 +43,31 @@ export default function HomeLayout({
     };
   }, [width]);
   return (
-    <html lang="en">
-      <body className="bg-[var(--bgColor)] relative">
-        <UserProvider>
-          <TokenProvider>
-            <Header openMenu={openMenu} setOpenMenu={setOpenMenu} />
-            <section className="flex gap-4">
-              <div className="hidden lg:block">
-                <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
-              </div>
-              {openMenu && (
-                <div className="lg:hidden block">
-                  <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
-                </div>
-              )}
-              <main className="lg:w-4/5 mx-auto">{children}</main>
-            </section>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <TokenProvider>
+          <SearchProvider>
+            <PostProvider>
+              <>
+                <Header openMenu={openMenu} setOpenMenu={setOpenMenu} />
+                <section className="flex gap-4">
+                  <div className="hidden lg:block">
+                    <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
+                  </div>
+                  {openMenu && (
+                    <div className="lg:hidden block">
+                      <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
+                    </div>
+                  )}
+                  <main className="lg:w-4/5 mx-auto">{children}</main>
+                </section>
 
-            <Footer />
-          </TokenProvider>
-        </UserProvider>
-      </body>
-    </html>
+                <Footer />
+              </>
+            </PostProvider>
+          </SearchProvider>
+        </TokenProvider>
+      </UserProvider>
+    </QueryClientProvider>
   );
 }

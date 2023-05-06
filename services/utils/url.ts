@@ -7,6 +7,11 @@ const getQuotesUrl = baseUrl + "/quote/";
 const getAllpostsUrl = baseUrl + "/post/all/";
 const profileUrl = baseUrl + "/user/profile/";
 const postsUrl = baseUrl + "/post/";
+const notificationUrl = baseUrl + "/notification/";
+const getNewPostsUrl = postsUrl + "new/";
+const getTrendingPostsUrl = postsUrl + "trending/";
+const getPopularPostsUrl = postsUrl + "popular/";
+const getTopUsersUrl = baseUrl + "/user/topusers/";
 
 export {
   baseUrl,
@@ -17,4 +22,9 @@ export {
   getAllpostsUrl,
   profileUrl,
   postsUrl,
+  notificationUrl,
+  getNewPostsUrl,
+  getTrendingPostsUrl,
+  getPopularPostsUrl,
+  getTopUsersUrl,
 };

@@ -12,7 +12,7 @@ interface TagProps {
   text: string;
 }
 
-const getTagColor = ["red", "green", "blue", "yellow", "grey"];
+const getTagColor = ["#E0A983", "#FEC4C0", "#DEB4C8", "#FEC4C0", "#E0A983"];
 
 const convertToHashtags = (tags: string) => {
   const tagArray = tags.split("\n");
@@ -27,7 +27,7 @@ const convertToHashtags = (tags: string) => {
       <span
         key={`${tagIndex}-${index}`}
         className={
-          "flex items-center text-[8px] text-[black] font-bold px-2 py-[7px] w-fit rounded-sm"
+          "flex items-center text-[8px] text-black font-bold px-2 py-[7px] w-fit rounded-sm"
         }
         style={{ background: getTagColor[index] }}
       >{`#${sentence.trim()}`}</span>

@@ -44,10 +44,10 @@ const useGetRequest = <T extends any>({
         const response = await axios.get<T>(url, { headers });
         setData(response.data);
       } catch (error: any) {
-        if (error.message == "Request failed with status code 401") {
-          removeToken();
-          router.replace("/login");
-        }
+        // if (error.message == "Request failed with status code 401") {
+        //   removeToken();
+        //   router.replace("/login");
+        // }
         setError(error.message);
       } finally {
         setIsLoading(false);

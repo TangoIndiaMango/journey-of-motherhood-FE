@@ -14,12 +14,15 @@ import AuthCarousel from "../../AuthCarousel";
 import Input from "@/components/Input";
 import { Toaster, toast } from "react-hot-toast";
 import { Spin } from "antd";
+import { useUser } from "@/services/state/useUser";
 
 const Signin = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [checkBox, setCheckBox] = useState(false);
   const [disableBtn, setDisableBtn] = useState(true);
+
+  const { setUser } = useUser();
 
   const {
     register,
@@ -37,6 +40,7 @@ const Signin = () => {
 
       if (response.data) {
         toast.success("Login Successful!");
+        setUser(response.data.user);
         typeof window !== "undefined" &&
           window.localStorage.setItem(
             "access_token",
@@ -47,16 +51,7 @@ const Signin = () => {
             "refresh_token",
             response.data.refresh_token
           );
-        // Redirect to previous page or home page
-        const previousPage =
-          typeof window !== "undefined" &&
-          window.localStorage.getItem("previous_page");
-        if (previousPage) {
-          // localStorage.removeItem("previous_page");
-          router.push(previousPage);
-        } else {
-          router.push("/");
-        }
+        router.replace("/");
       }
     } catch (error) {
       console.error(error);
@@ -82,20 +77,23 @@ const Signin = () => {
         <div className="text-center flex flex-col items-center gap-4">
           <h3 className="text-xl font-extrabold">Welcome Back!</h3>
 
-          <p className="">
+          {/* <p className="">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,
             illo!
-          </p>
+          </p> */}
 
-          <>
+          {/* <>
             <span className="cursor-pointer border-[1px] border-gray-400 flex h-max items-center px-2 py-1 gap-3 w-fit rounded-2xl mt-2">
               <FcGoogle />
               <h6 className="text-[12px] font-bold">Log in with Google</h6>
             </span>
             <p className="mb-2 md:mb-6">or</p>
-          </>
+          </> */}
         </div>
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-6 my-4 lg:w-[350px]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {/* signup form  starts*/}
 
           <div className="grid gap-4 ">
@@ -136,7 +134,7 @@ const Signin = () => {
             />
           </div>
 
-          <div className="text-[12px] text-gray-600 flex h-full justify-between items-center my-2 ">
+          {/* <div className="text-[12px] text-gray-600 flex h-full justify-between items-center my-2 ">
             <span className=" flex h-full items-center gap-3">
               <input
                 type="checkbox"
@@ -151,14 +149,14 @@ const Signin = () => {
             <Link href={"/reset-password"} className="underline">
               Forget password
             </Link>
-          </div>
+          </div> */}
 
           <button
             type="submit"
             className="button disabled:cursor-not-allowed disabled:bg-gray-500"
-            disabled={loading || disableBtn}
+            disabled={loading}
           >
-            <>{loading ? <Spin /> : "Log in"}</>
+            <>{loading ? "Loading..." : "Log in"}</>
           </button>
           <div className="text-[12px] text-gray-600 flex justify-center w-4/5 mx-auto gap-4 h-full items-center">
             <p>{"Don't"} have an account?</p>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { BsFacebook, BsInstagram, BsTelegram, BsTwitter } from "react-icons/bs";
@@ -17,7 +18,7 @@ const data = [
 
 const Footer = () => {
   return (
-    <footer className="p-10 bg-black text-white w-full">
+    <footer className="p-10 bg-black text-white w-full relative">
       <div className="flex items-start justify-between flex-col md:flex-row">
         <div className="">
           <h4 className="text-[16px] font-bold">Stay in the loop</h4>
@@ -57,8 +58,16 @@ const Footer = () => {
         ))}
       </div>
       <div className="bg-gray-700 w-full h-[1px]" />
-      <div className="flex justify-between items-center mt-8">
-        <div className="">LOGO</div>
+      <div className="flex justify-between items-center mt-2">
+        <Link href={"/"} className="">
+          <Image
+            src={"/bg-logo.png"}
+            alt="logo"
+            width={200}
+            height={200}
+            className="w-[100px] relative -left-10"
+          />
+        </Link>
         <div className="flex items-center gap-4">
           <BsFacebook />
           <BsTelegram />

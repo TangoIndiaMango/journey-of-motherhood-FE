@@ -5,6 +5,7 @@ import { Spin } from "antd";
 import { Toaster, toast } from "react-hot-toast";
 import { postsUrl } from "@/services/utils/url";
 import { useRouter } from "next/navigation";
+import { topics } from "@/services/constants/data";
 
 interface IData {
   title: string;
@@ -21,26 +22,6 @@ const initialState: IData = {
   topic: "",
   check: false,
 };
-
-const optionsValue = [
-  "DIV",
-  "REL",
-  "OCC",
-  "PRE",
-  "MAR",
-  "INT",
-  "WED",
-  "NEW",
-  "SIN",
-  "TTC",
-  "SPI",
-  "HEA",
-  "FAS",
-  "PAR",
-  "SOC",
-  "AID",
-  "DIY",
-];
 
 export const StartDiscussion = ({ setStartDiscussion }: any) => {
   const router = useRouter();
@@ -80,7 +61,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
   }
 
   if (error) {
-    toast.error("Opps! an error occurred, please try again");
+    console.log("Opps! an error occurred, please try again");
   }
 
   return (
@@ -89,6 +70,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
       onSubmit={handleSubmit}
     >
       <Toaster />
+      <h2 className="text-xl font-bold my-4">Create a Forum Discussion</h2>
       <div className="w-full">
         <input
           type="text"
@@ -136,9 +118,9 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
               className="w-full px-2 py-2 text-xs"
             >
               <option value="">Select a top</option>
-              {optionsValue.map((value, index) => (
-                <option value={value} key={`${value}-${index}`}>
-                  {value}
+              {topics.map((value, index) => (
+                <option value={value.abbr} key={value.id}>
+                  {value.title}
                 </option>
               ))}
             </select>
@@ -152,7 +134,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
             </button>
           </div>
         </div>
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h5 className="text-sm font-bold my-2">Featured image</h5>
           <div className="flex items-center gap-4">
             <input
@@ -176,7 +158,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="mt-8 md:hidden">
         <button

@@ -1,32 +1,23 @@
 "use client";
 
+import { topics } from "@/services/constants/data";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { RxCaretDown } from "react-icons/rx";
-
-const data = [
-  { id: 1, title: "Divorce and ...", value: 21, color: "red" },
-  { id: 2, title: "Occupation and ...", value: 20, color: "green" },
-  { id: 3, title: "Pregnancy and ...", value: 10, color: "yellow" },
-  { id: 4, title: "Single Parent ...", value: 222, color: "blue" },
-  { id: 5, title: "Intimacy", value: 20, color: "orange" },
-];
 
 const PinnedTopics = ({ closeMenu }: any) => {
   const router = useRouter();
   const searchParam = useSearchParams();
-  const pathname = usePathname();
+  const pathname = searchParam.get("q");
 
-  const navItems = data.map((d) => {
+  const navItems = topics.map((d) => {
     return (
       <Link
-        // href={d.title.replace(/ /g, "")}
-        href="/post/[post-id]"
-        as={`/post/${d.id}`}
+        href={`/post/search?q=${d.abbr.toLowerCase()}`}
         key={d.id}
-        className={`asideLink my-2 text-[12px] ${
-          pathname == "/post/" + String(d.id) && "asideActive"
+        className={`asideLink my-1 text-[10px] lg:text-[12px] leading-tight lg:leading-relaxed ${
+          pathname == String(d.abbr.toLowerCase()) && "asideActive"
         }`}
         onClick={closeMenu}
       >
@@ -39,9 +30,9 @@ const PinnedTopics = ({ closeMenu }: any) => {
     );
   });
   return (
-    <div className="my-20 ">
-      <div className="flex items-center gap-2 mb-4 text-[13px] font-bold lg:w-[140px]">
-        <h5 className="">Pinned topics (5)</h5>
+    <div className="my-3 lg:my-10 ">
+      <div className="flex items-center gap-2  lg:gap-4 mb-1 text-[12px] font-bold lg:w-[140px]">
+        <h5 className="lg:my-4">Pinned Titles ({topics.length})</h5>
         <RxCaretDown className="text-2xl" />
       </div>
       <nav>{navItems}</nav>

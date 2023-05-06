@@ -34,7 +34,7 @@
 
   .button,
   button {
-    @apply text-sm bg-[var(--primaryColor)] w-full py-3 rounded-md hover:bg-[#a71d60] text-white;
+    @apply text-sm bg-[var(--primaryColor)] w-full py-3 rounded-md hover:bg-[#a71d60] text-white disabled:cursor-not-allowed disabled:bg-gray-500;
   }
   .asideActive {
     @apply bg-[#EDD5E1] border-l-[var(--primaryColor)] border-l-[5px];
@@ -44,5 +44,9 @@
   }
   .card {
     @apply bg-white p-4 rounded-md;
+  }
+
+  .input {
+    @apply border-gray-100 accent-[var(--primaryColor)] cursor-pointer;
   }
 }

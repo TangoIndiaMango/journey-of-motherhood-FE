@@ -8,5 +8,5 @@ export default function SignupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main>{children}</main>;
+  return <>{children}</>;
 }

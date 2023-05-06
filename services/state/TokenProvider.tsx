@@ -30,6 +30,9 @@ export const TokenContext = createContext<TokenContextProps>({
 export const TokenProvider = ({ children }: TokenProviderProps) => {
   const [accessToken, setAccessToken] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState<string>("");
+  const user =
+    typeof window !== "undefined" && window.localStorage.getItem("user");
+
   const router = useRouter();
   // Get access token and refresh token from localStorage on initial render
   useEffect(() => {
@@ -67,15 +70,17 @@ export const TokenProvider = ({ children }: TokenProviderProps) => {
           window.localStorage.setItem("refresh_token", response?.data?.refresh);
       } catch (error: any) {
         if (error.message == "Request failed with status code 401") {
-          toast.error("Opps! an Error occurred, redirecting to login");
           removeToken();
           router.push("/login");
         }
         console.error(error);
-        toast.error("An Error occurred");
       }
     };
 
+    if (!user) {
+      console.log("User not found");
+      return;
+    }
     getRefresh();
 
     const interval = setInterval(getRefresh, 240000); // 4 minutes

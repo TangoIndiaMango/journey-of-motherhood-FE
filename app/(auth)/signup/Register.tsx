@@ -56,9 +56,9 @@ const AuthLayout = () => {
         <div className="text-center flex flex-col items-center gap-4">
           <h3 className="text-xl font-extrabold">Welcome!</h3>
 
-          <p className="mb-4">
+          {/* <p className="mb-4">
             Lorem ipsum dolor sit amet consectetur adipisicing
-          </p>
+          </p> */}
 
           {/* <>
             <span className="cursor-pointer border-[1px] border-gray-400 flex h-max items-center px-2 py-1 gap-3 w-fit rounded-2xl mt-2">
@@ -68,7 +68,10 @@ const AuthLayout = () => {
             <p className="mb-2 md:mb-6">or</p>
           </> */}
         </div>
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-6  lg:w-[350px] my-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <>
             <div className="grid gap-4 ">
               <div className="inputContainer flex h-fit justify-between items-center relative w-full">

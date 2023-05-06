@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { MdShowChart } from "react-icons/md";
-import ForumTopics from "./ForumTopics";
 import TrendingToday from "./TrendingToday";
 import NewPosts from "./NewPosts";
-import { useRouter } from "next/navigation";
-import useGetRequest from "@/hooks/useGetRequest";
-import { getQuotesUrl } from "@/services/utils/url";
-import { Spin, notification } from "antd";
+import {
+  getNewPostsUrl,
+  getQuotesUrl,
+  getTrendingPostsUrl,
+} from "@/services/utils/url";
+import { Spin } from "antd";
 import AllPosts from "@/components/AllPosts";
-import { useTokenContext } from "@/services/state/TokenProvider";
 import QuoteSlider from "./Quotes";
 import { toast } from "react-hot-toast";
-import useGetUser from "@/hooks/useGetUser";
-import { useUser } from "@/services/state/useUser";
+import axios from "axios";
+import { useQuery } from "react-query";
 
 interface Quote {
   id: number;
@@ -22,43 +22,61 @@ interface Quote {
   description: string;
 }
 
+interface Trending {
+  id: number;
+  title: string;
+  views: number;
+}
+
+interface INewPosts {
+  created_at: string;
+  id: number;
+  title: string;
+}
+
 const Home = () => {
-  const router = useRouter();
-  // const { accessToken } = useTokenContext();
-  const accessToken =
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("access_token");
-
-  const { isLoading, error, data } = useGetUser({ accessToken });
-
-  const { setUser } = useUser();
-
-  useEffect(() => {
-    if (accessToken === null || accessToken === undefined) {
-      typeof window !== "undefined" &&
-        window.localStorage.setItem("previous_page", "/");
-      router.replace("/login");
-    }
-  }, [accessToken, router]);
-
-  useEffect(() => {
-    if (data) setUser(data);
-  }, [data?.first_name]);
-
   const {
     data: quoteData,
     isLoading: quoteLoading,
-    error: quoteError,
-  } = useGetRequest<Quote[]>({
-    url: getQuotesUrl,
-    useBearerToken: true,
-    bearerToken: accessToken as string,
+    isError: quoteError,
+  } = useQuery(["quotesResult"], async () => {
+    const response = await axios.get(getQuotesUrl);
+    return response.data as Quote[];
   });
 
-  if (quoteError || error) {
-    console.log(quoteError || error);
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    isError: trendingError,
+  } = useQuery(["trendingResult"], async () => {
+    const response = await axios.get(getTrendingPostsUrl);
+    return response?.data;
+  });
+
+  const {
+    data: newPostsData,
+    isLoading: newPostsLoading,
+    isError: newPostsError,
+  } = useQuery(["newPostsResult"], async () => {
+    const response = await axios.get(getNewPostsUrl);
+    return response?.data;
+  });
+
+  if (quoteError || trendingError || newPostsError) {
+    console.log(quoteError || trendingError || newPostsError);
     toast.error("an error occurred");
+    return;
   }
+
+  if (newPostsError && trendingError)
+    return (
+      <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+        <h2 className="text-red-500 text-xl w-[35ch]">
+          Opps! an error as occured while loading this page, Please try again
+          Later
+        </h2>
+      </section>
+    );
 
   return (
     <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
@@ -71,7 +89,7 @@ const Home = () => {
               </div>
             </div>
             <>
-              {quoteLoading || isLoading ? (
+              {quoteLoading ? (
                 <Spin />
               ) : (
                 <>
@@ -92,31 +110,37 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="lg:w-1/4 lg:grid gap-8 h-fit hidden ">
+      <div className="w-full flex flex-col lg:w-[40%] lg:grid gap-8 h-fit">
         <div className="card ">
           <div className="flex items-center justify-between text-sm mb-5">
-            <h4 className="font-bold">Trending Today</h4>
+            <h4 className="font-bold">Trending </h4>
             <MdShowChart className="text-blue-500 text-xl" />
           </div>
-
-          <TrendingToday />
-          <TrendingToday />
-          <TrendingToday />
-          <TrendingToday />
-          <TrendingToday />
+          {trendingLoading ? (
+            <Spin />
+          ) : (
+            <>
+              {trendingData && trendingData.length < 1
+                ? "Opps! No Trending Topics Available"
+                : trendingData.map((tr: Trending) => {
+                    return <TrendingToday key={tr.id} {...tr} />;
+                  })}
+            </>
+          )}
         </div>
         <div className="card">
           <h4 className="font-bold text-sm mb-5">New Posts</h4>
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
-          <NewPosts />
+          {newPostsLoading ? (
+            <Spin />
+          ) : (
+            <>
+              {newPostsData && newPostsData.length < 1
+                ? "Opps! No Trending Topics Available"
+                : newPostsData.map((newPost: INewPosts) => {
+                    return <NewPosts key={newPost.id} {...newPost} />;
+                  })}
+            </>
+          )}
         </div>
       </div>
     </section>

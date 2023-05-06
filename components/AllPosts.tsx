@@ -4,16 +4,23 @@ import useGetRequest from "@/hooks/useGetRequest";
 import { useTokenContext } from "@/services/state/TokenProvider";
 import { getAllpostsUrl } from "@/services/utils/url";
 import { Pagination, Spin } from "antd";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useQuery } from "react-query";
 
 const AllPosts = () => {
   const router = useRouter();
   const [page, setPage] = useState(0);
-  const { data, isLoading, error } = useGetRequest({
-    url: getAllpostsUrl,
-  });
+
+  const { data, isLoading, isError } = useQuery(
+    ["allPostsResult"],
+    async () => {
+      const response = await axios.get(getAllpostsUrl);
+      return response.data;
+    }
+  );
 
   const convertDate = (date: string) => {
     const a = new Date(date);
@@ -31,7 +38,7 @@ const AllPosts = () => {
 
   const totalPages = Math.ceil(sortedData?.length / pageSize);
 
-  if (error) {
+  if (isError) {
     toast.error("an error occurred");
   }
 

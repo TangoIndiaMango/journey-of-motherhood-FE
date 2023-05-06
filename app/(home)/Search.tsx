@@ -2,24 +2,32 @@
 import Search from "antd/es/input/Search";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSearch } from "@/services/state/SearchProvider";
+import { Toaster, toast } from "react-hot-toast";
 
 const SearchComponent = ({ setToggleSearchMobile }: any) => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { setSearchValue } = useSearch();
 
   const onSearch = async (value: string) => {
-    setSearchQuery(value);
-    typeof window !== "undefined" &&
-      window.localStorage.setItem("search_query", searchQuery);
-    router.push(`/post/search?q=${value}`);
+    if (value?.length > 0) {
+      setSearchValue(value);
+      router.push(`/post/search?q=${value}`);
 
-    if (setToggleSearchMobile) {
-      setToggleSearchMobile(false);
+      if (setToggleSearchMobile) {
+        setToggleSearchMobile(false);
+      }
+      return;
+    }
+    if (value === "") {
+      toast.error("Input a search value");
+      return;
     }
   };
 
   return (
     <div className="w-[80%]">
+      <Toaster />
       <Search placeholder="input search text" allowClear onSearch={onSearch} />
     </div>
   );
