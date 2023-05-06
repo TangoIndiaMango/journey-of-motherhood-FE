@@ -34,11 +34,7 @@ export interface ITopUser {
   last_name: string;
 }
 
-export default function SearchPost({
-  searchParam,
-}: {
-  [key: string]: string | string[] | undefined;
-}) {
+const SearchPost = () => {
   const [page, setPage] = useState(0);
   // const { searchValue } = useSearch();
   const router = useRouter();
@@ -170,4 +166,6 @@ export default function SearchPost({
       </div>
     </section>
   );
-}
+};
+
+export default SearchPost;
