@@ -59,7 +59,7 @@ const SearchPost = () => {
     isError: topUsersError,
   } = useQuery(["topUsersResult"], async () => {
     const response = await axios.get(getTopUsersUrl);
-    return response?.data;
+    return response?.data as ITopUser[];
   });
 
   if (topUsersError) console.log(topUsersError);
@@ -140,7 +140,7 @@ const SearchPost = () => {
               <>
                 {topUsersData && topUsersData.length < 1
                   ? "Opps! No Trending Topics Available"
-                  : topUsersData.map((topUser: ITopUser) => {
+                  : topUsersData?.map((topUser: ITopUser) => {
                       return <TopUsers key={topUser.id} {...topUser} />;
                     })}
               </>
