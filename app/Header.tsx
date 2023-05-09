@@ -73,10 +73,11 @@ const Header = ({ setOpenMenu, openMenu }: Iprops) => {
   if (error) {
     console.log(error);
     toast.error("an error occurred ");
-    return;
   }
 
-  if (isNotificationPostError) console.log(`An error occurred notification`);
+  if (isNotificationPostError) {
+    console.log(`An error occurred notification`);
+  }
 
   return (
     <header className="w-full bg-white h-[80px] flex items-center justify-between px-10 relative">
