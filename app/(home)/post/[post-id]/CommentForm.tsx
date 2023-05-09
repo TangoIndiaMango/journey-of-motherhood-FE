@@ -19,7 +19,6 @@ type CommentFormProps = {
 
 const accessToken =
   typeof window !== "undefined" && window.localStorage.getItem("access_token");
-console.log(accessToken);
 
 const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
   const router = useRouter();

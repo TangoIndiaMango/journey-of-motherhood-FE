@@ -74,7 +74,10 @@ const PostDetail = () => {
   });
 
   const handlePostNotification = (type: string) => {
-    if (reactionData[0]?.reaction_type || isReacted) {
+    if (
+      (reactionData[0]?.reaction_type && user?.id === reactionData[0]?.user) ||
+      isReacted
+    ) {
       toast.error("You have already reacted");
       return;
     }
@@ -182,6 +185,11 @@ const PostDetail = () => {
                             className="px-2  p-1 shadow-sm text-lg"
                             key={r.type}
                             onClick={() => {
+                              if (!user) {
+                                router.push("/login");
+                                toast.error("Only logged in users can react");
+                                return;
+                              }
                               handlePostNotification(r.type.toLowerCase());
                               setOpenReactions(false);
                             }}

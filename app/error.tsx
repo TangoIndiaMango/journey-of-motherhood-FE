@@ -14,17 +14,29 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div className="my-10">
+        <div className="px-10 overflow-hidden py-10">
           <h2>Opps! Something went wrong!</h2>
-          <button
-            className="px-10 py-2"
-            onClick={
-              // Attempt to recover by trying to re-render the segment
-              () => router.push("/")
-            }
-          >
-            Go Home
-          </button>
+          <div className="flex gap-4 ">
+            {" "}
+            <button
+              className="px-5 py-2 w-[100px]"
+              onClick={
+                // Attempt to recover by trying to re-render the segment
+                () => router.push("/")
+              }
+            >
+              Go Home
+            </button>
+            <button
+              className="px-5 py-2 w-[100px]"
+              onClick={
+                // Attempt to recover by trying to re-render the segment
+                () => reset()
+              }
+            >
+              Retry
+            </button>
+          </div>
         </div>
       </body>
     </html>
