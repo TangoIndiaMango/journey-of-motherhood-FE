@@ -163,7 +163,7 @@ const PostDetail = () => {
                         )}
                       </Avatar>
 
-                      <button className="px-1 py-1 w-[70px]">Follow</button>
+                      {/* <button className="px-1 py-1 w-[70px]">Follow</button> */}
                     </div>
                   </div>
 
