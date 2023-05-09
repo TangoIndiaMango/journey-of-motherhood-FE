@@ -16,31 +16,11 @@ export interface INotification {
   notification_type: string;
   updated_at: string;
   user: number;
+  read: boolean;
 }
 
 const NotigicationPage = () => {
-  const { setNotificationsValue } = useStore();
-
-  let token =
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("access_token");
-
-  const { data, isLoading, error } = useGetRequest({
-    url: notificationUrl,
-    useBearerToken: true,
-    bearerToken: token as string,
-  });
-
-  useEffect(() => {
-    if (data) {
-      setNotificationsValue(data?.length);
-    }
-  }, [data?.length]);
-
-  if (error) {
-    toast.error("An error has occurred");
-    return;
-  }
+  const { notificationData: data } = useStore();
 
   return (
     <section className="px-10">
@@ -51,18 +31,14 @@ const NotigicationPage = () => {
           Mark as read
         </div> */}
       </div>
-      <div className="grid gap-2 mb-10 min-w-[200px]">
-        {isLoading ? (
-          <Spin />
-        ) : (
-          <>
-            {data && data.length < 1
-              ? "Opps! No Trending Topics Available"
-              : data?.map((data: INotification) => {
-                  return <NotificationCard {...data} key={data.id} />;
-                })}
-          </>
-        )}
+      <div className="grid lg:grid-cols-3 gap-4 mb-10 min-w-[200px]">
+        <>
+          {data && data.length < 1
+            ? "Opps! No Notification Available"
+            : data?.map((data: INotification) => {
+                return <NotificationCard {...data} key={data.id} />;
+              })}
+        </>
       </div>
     </section>
   );

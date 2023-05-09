@@ -1,9 +1,13 @@
+"use client";
+
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { postsUrl } from "@/services/utils/url";
 
 import { Toaster, toast } from "react-hot-toast";
+import { useUser } from "@/services/state/useUser";
+import { useRouter } from "next/navigation";
 
 type Comment = {
   text: string;
@@ -15,15 +19,15 @@ type CommentFormProps = {
 
 const accessToken =
   typeof window !== "undefined" && window.localStorage.getItem("access_token");
-
-const user =
-  typeof window !== "undefined" && window.localStorage.getItem("access_token");
+console.log(accessToken);
 
 const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
+  const router = useRouter();
+  const { user } = useUser();
   const [comment, setComment] = useState<string>("");
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading, isError, isSuccess } = useMutation(
+  const { mutate, isLoading, isError } = useMutation(
     (newComment) =>
       axios.post(`${postsUrl}${postId}/comment/`, newComment, {
         headers: {
@@ -41,6 +45,11 @@ const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) {
+      toast.error("Opps! only logged in users can comment");
+      router.push("/login");
+      return;
+    }
 
     if (comment.trim() === "") {
       toast.error("Please enter a comment ");
@@ -50,7 +59,9 @@ const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
     mutate({ text: comment } as any);
   };
 
-  if (isError) toast.error("Opps! an error occurred, Please try again");
+  if (isError) {
+    console.log("Opps! an error occurred, Please try again");
+  }
 
   return (
     <form

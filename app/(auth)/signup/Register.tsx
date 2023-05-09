@@ -38,23 +38,26 @@ const AuthLayout = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    await postRequest({ url: registerUrl, query: data });
+    postRequest({ url: registerUrl, query: data });
   };
 
   if (error) console.log(error);
-  if (data) router.replace("/");
+  if (data) router.replace("/login");
 
   return (
     <section className="flex flex-col h-screen md:flex-row-reverse">
       <AuthCarousel />
 
-      <div className="px-10 py-10 md:py-20 relative bg-[var(--bgColor)] h-3/4 md:h-screen md:w-2/3 md:px-30 md:grid place-content-center ">
+      <div className="px-10 py-10 md:py-20 relative bg-[var(--bgColor)] h-[80%] md:h-screen md:w-2/3 md:px-30 md:grid place-content-center ">
         <BsArrowLeftShort
           className="text-2xl absolute top-5 left-8 cursor-pointer"
           onClick={() => router.push("/")}
         />
         <div className="text-center flex flex-col items-center gap-4">
-          <h3 className="text-xl font-extrabold">Welcome!</h3>
+          <h3 className="text-[1.2rem] font-extrabold text-center mx-auto max-w-[35ch] my-5">
+            Without anything called mother every living thing would have gone to
+            extinction. Mothers birth each generation of mankind.
+          </h3>
 
           {/* <p className="mb-4">
             Lorem ipsum dolor sit amet consectetur adipisicing

@@ -31,7 +31,7 @@ export default function HomeLayout({
   useEffect(() => {
     function handleResize() {
       setWidth(window.innerWidth);
-      width > 767 ? setOpenMenu(true) : setOpenMenu(false);
+      width > 900 ? setOpenMenu(true) : setOpenMenu(false);
     }
 
     window.addEventListener("resize", handleResize);
@@ -59,7 +59,7 @@ export default function HomeLayout({
                       <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
                     </div>
                   )}
-                  <main className="lg:w-4/5 mx-auto">{children}</main>
+                  <div className="lg:w-4/5 mx-auto">{children}</div>
                 </section>
 
                 <Footer />

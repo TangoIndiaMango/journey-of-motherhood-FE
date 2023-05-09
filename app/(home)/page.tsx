@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { MdShowChart } from "react-icons/md";
 import TrendingToday from "./TrendingToday";
 import NewPosts from "./NewPosts";
@@ -8,6 +8,7 @@ import {
   getNewPostsUrl,
   getQuotesUrl,
   getTrendingPostsUrl,
+  notificationUrl,
 } from "@/services/utils/url";
 import { Spin } from "antd";
 import AllPosts from "@/components/AllPosts";
@@ -105,7 +106,7 @@ const Home = () => {
             </>
           </div>
           <div className="mt-8">
-            <h4 className="font-bold my-2">Forum Topics</h4>
+            <h4 className="font-bold my-2">Forum Title</h4>
             <AllPosts />
           </div>
         </div>

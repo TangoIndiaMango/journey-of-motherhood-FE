@@ -2,7 +2,7 @@ import useGetRequest from "@/hooks/useGetRequest";
 import { useUser } from "@/services/state/useUser";
 import Avatar from "antd/es/avatar/avatar";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import SearchComponent from "./(home)/Search";
 import { Badge, Spin } from "antd";
@@ -10,6 +10,10 @@ import { BsBell, BsSearch } from "react-icons/bs";
 import { clearLocalStorage, removeToken } from "@/services/variables";
 import Image from "next/image";
 import { useStore } from "@/services/state/zustand-store/store";
+import { notificationUrl } from "@/services/utils/url";
+import { Toaster, toast } from "react-hot-toast";
+import usePostRequest from "@/hooks/usePostRequests";
+import { INotification } from "./(home)/notifications/page";
 
 interface Iprops {
   setOpenMenu: (a: boolean) => void;
@@ -18,14 +22,65 @@ interface Iprops {
 
 const Header = ({ setOpenMenu, openMenu }: Iprops) => {
   const router = useRouter();
-  const { user: data } = useUser();
+  const { user } = useUser();
+  let token =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
+
+  const {
+    isLoading: isLoadingNotificationPost,
+    error: isNotificationPostError,
+    postRequest,
+  } = usePostRequest();
 
   const [toggleSearchMobile, setToggleSearchMobile] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
-  const { setNotificationsValue, notificationsValue } = useStore();
+  const {
+    setNotificationsValue,
+    notificationsValue,
+    setNotificationData,
+    notificationData,
+  } = useStore();
+
+  const { data, isLoading, error } = useGetRequest({
+    url: notificationUrl,
+    useBearerToken: true,
+    bearerToken: token as string,
+  });
+
+  const handlePostNotification = () => {
+    if (notificationsValue < 1) return;
+    postRequest({
+      url: notificationUrl + "mark-as-read/",
+      query: {},
+      useBearerToken: true,
+      bearerToken: token as string,
+    });
+    toast.success("Notification marked as read");
+  };
+
+  useEffect(() => {
+    if (data) {
+      const unreadNotification = data?.filter(
+        (d: INotification) => d?.read == false
+      );
+      setNotificationsValue(unreadNotification?.length);
+      setNotificationData(data);
+      return;
+    }
+  }, [data?.length, notificationsValue]);
+
+  if (error) {
+    console.log(error);
+    toast.error("an error occurred ");
+    return;
+  }
+
+  if (isNotificationPostError) console.log(`An error occurred notification`);
 
   return (
     <header className="w-full bg-white h-[80px] flex items-center justify-between px-10 relative">
+      <Toaster />
       <div className="flex items-center gap-2">
         <div className="md:hidden">
           {openMenu ? (
@@ -63,7 +118,7 @@ const Header = ({ setOpenMenu, openMenu }: Iprops) => {
         <SearchComponent setToggleSearchMobile={setToggleSearchMobile} />
       </div>
 
-      {data ? (
+      {user ? (
         <div className="flex h-full items-center gap-4">
           <BsSearch
             className="text-gray-600 text-lg lg:hidden"
@@ -77,7 +132,9 @@ const Header = ({ setOpenMenu, openMenu }: Iprops) => {
                   setOpenLogout((prev: boolean) => !prev);
                 }}
               >
-                {data?.first_name?.toUpperCase().charAt(0)}
+                {user?.first_name?.toUpperCase().charAt(0) +
+                  "" +
+                  user?.last_name?.toUpperCase().charAt(0)}
               </Avatar>
               {openLogout && (
                 <span
@@ -98,13 +155,18 @@ const Header = ({ setOpenMenu, openMenu }: Iprops) => {
               size="small"
               className=" animate-pulse"
             >
-              <BsBell
-                className=" text-gray-600 text-xl"
-                onClick={() => {
-                  router.push("/notifications");
-                  setNotificationsValue(0);
-                }}
-              />
+              {isLoading || isLoadingNotificationPost ? (
+                <Spin />
+              ) : (
+                <BsBell
+                  className=" text-gray-600 text-xl"
+                  onClick={() => {
+                    router.push("/notifications");
+                    handlePostNotification();
+                    // setNotificationsValue(0);
+                  }}
+                />
+              )}
             </Badge>
           </div>
         </div>

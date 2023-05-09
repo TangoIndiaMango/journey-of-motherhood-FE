@@ -27,6 +27,8 @@ const ForumTopics = ({ ...item }) => {
           <Avatar className="grid">
             {!item?.user
               ? "ANO"
+              : item.is_anonymous
+              ? "ANO"
               : getInitials(item?.user?.first_name, item?.user?.last_name)}
           </Avatar>
         </div>

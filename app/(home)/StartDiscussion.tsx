@@ -6,6 +6,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { postsUrl } from "@/services/utils/url";
 import { useRouter } from "next/navigation";
 import { topics } from "@/services/constants/data";
+import { useUser } from "@/services/state/useUser";
 
 interface IData {
   title: string;
@@ -28,6 +29,8 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
   const [data, setData] = useState(initialState);
   const { data: response, error, isLoading, postRequest } = usePostRequest();
 
+  const { user } = useUser();
+
   const handleChange = (e: any) => {
     setData({
       ...data,
@@ -42,6 +45,12 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    if (!user) {
+      router.replace("/login");
+      toast.error("Opps! only logged in users can create a Discussion");
+      return;
+    }
+
     postRequest({
       url: postsUrl + "create/",
       query: {
@@ -49,6 +58,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
         description: data?.description,
         tags: data?.tags,
         topic: data?.topic,
+        is_anonymous: data?.check ? true : false,
       },
       useBearerToken: true,
       bearerToken: token as string,
@@ -134,14 +144,14 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
             </button>
           </div>
         </div>
-        {/* <div className="mt-8">
-          <h5 className="text-sm font-bold my-2">Featured image</h5>
+        <div className="mt-8">
+          {/* <h5 className="text-sm font-bold my-2">Featured image</h5> */}
           <div className="flex items-center gap-4">
-            <input
+            {/* <input
               type="text"
               placeholder=""
               className=" px-2 py-2 text-xs w-min-[150px]"
-            />
+            /> */}
 
             <div className="flex items-center text-xs gap-2">
               <label htmlFor="anonymous" className="text-xs">
@@ -158,7 +168,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
               />
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="mt-8 md:hidden">
         <button

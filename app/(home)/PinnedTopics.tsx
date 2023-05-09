@@ -3,13 +3,14 @@
 import { topics } from "@/services/constants/data";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
-import { RxCaretDown } from "react-icons/rx";
+import React, { useState } from "react";
+import { RxCaretDown, RxCaretUp } from "react-icons/rx";
 
 const PinnedTopics = ({ closeMenu }: any) => {
   const router = useRouter();
   const searchParam = useSearchParams();
   const pathname = searchParam.get("q");
+  const [collapseTopics, setCollapseTopics] = useState(true);
 
   const navItems = topics.map((d) => {
     return (
@@ -30,12 +31,27 @@ const PinnedTopics = ({ closeMenu }: any) => {
     );
   });
   return (
-    <div className="my-3 lg:my-10 ">
-      <div className="flex items-center gap-2  lg:gap-4 mb-1 text-[12px] font-bold lg:w-[140px]">
-        <h5 className="lg:my-4">Pinned Titles ({topics.length})</h5>
-        <RxCaretDown className="text-2xl" />
+    <div className="my-3 lg:py-5 ">
+      <div className="flex items-center gap-2  lg:gap-4 mb-2 text-[12px] font-bold lg:w-[140px]">
+        <h5 className="lg:my-4">Pinned Topics ({topics.length})</h5>
+        {collapseTopics ? (
+          <RxCaretDown
+            className="text-2xl cursor-pointer"
+            onClick={() => setCollapseTopics(false)}
+          />
+        ) : (
+          <RxCaretUp
+            className="text-2xl cursor-pointer"
+            onClick={() => setCollapseTopics(true)}
+          />
+        )}
       </div>
-      <nav>{navItems}</nav>
+      <nav
+        className={`${collapseTopics ? "hidden" : "block"} transition`}
+        onClick={() => setCollapseTopics(false)}
+      >
+        {navItems}
+      </nav>
     </div>
   );
 };

@@ -28,13 +28,74 @@ import { postsUrl } from "@/services/utils/url";
 import { makeFriendly } from "@/services/variables";
 import CommentForm from "./CommentForm";
 import { useUser } from "@/services/state/useUser";
+import { useEffect, useState } from "react";
+import usePostRequest from "@/hooks/usePostRequests";
+import { toast } from "react-hot-toast";
+import useGetRequest from "@/hooks/useGetRequest";
+
+const reactionsTypes = [
+  { type: "Insightful", emoji: <p>&#128076;</p> },
+  { type: "Support", emoji: <p>&#129309;</p> },
+  { type: "Surprise", emoji: <p>&#128562;</p> },
+  { type: "Sad", emoji: <p>&#x1F61E;</p> },
+  { type: "Love", emoji: <p>&#128525;</p> },
+  { type: "Anger", emoji: <p>&#x1F620;</p> },
+  { type: "Like", emoji: <p>&#128077;</p> },
+];
 
 const PostDetail = () => {
+  const [openReactions, setOpenReactions] = useState(false);
+  const [isReacted, setIsReacted] = useState(false);
   const { postValue: post } = usePost();
   const segments = useSelectedLayoutSegments();
   const router = useRouter();
 
   const { user } = useUser();
+
+  let token =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("access_token");
+
+  const {
+    data: reactionPostData,
+    isLoading: isLoadingReactionPost,
+    error: isReactionPostError,
+    postRequest,
+  } = usePostRequest();
+
+  const {
+    data: reactionData,
+    isLoading,
+    error,
+  } = useGetRequest({
+    url: `${postsUrl}reaction/${post?.id}/`,
+    useBearerToken: true,
+    bearerToken: token as string,
+  });
+
+  const handlePostNotification = (type: string) => {
+    if (reactionData[0]?.reaction_type || isReacted) {
+      toast.error("You have already reacted");
+      return;
+    }
+    postRequest({
+      url: `${postsUrl}${post?.id}/reaction/`,
+      query: {
+        post: post?.id,
+        reaction_type: type,
+        user: user?.id,
+      },
+      useBearerToken: true,
+      bearerToken: token as string,
+    });
+    setIsReacted(true);
+    toast.success("Reaction sent");
+  };
+
+  if (error) toast.error("An error has occurred");
+  if (isReactionPostError) {
+    toast.error("An error has occurred");
+  }
 
   const {
     data: commentsResult,
@@ -46,6 +107,10 @@ const PostDetail = () => {
       return response.data;
     }
   });
+
+  useEffect(() => {
+    setIsReacted(false);
+  }, []);
 
   if (commentsLoading)
     return (
@@ -81,10 +146,12 @@ const PostDetail = () => {
                 <div className="pl-10">
                   <div className="flex justify-between items-start w-full">
                     <div className="flex item-center flex-col gap-2 md:flex-row md:gap-[20px] w-full">
-                      <h5 className="text-sm font-bold">{post?.title}</h5>
+                      <h5 className="text-sm font-bold flex ">
+                        <span className="">{post?.title}</span>
+                      </h5>
                     </div>
 
-                    <div className="w-full  flex justify-end">
+                    <div className="w-full  flex justify-end gap-5 items-center">
                       <Avatar>
                         {post.author ? (
                           <>
@@ -95,18 +162,38 @@ const PostDetail = () => {
                           <>ANO</>
                         )}
                       </Avatar>
+
+                      <button className="px-1 py-1 w-[70px]">Follow</button>
                     </div>
                   </div>
 
-                  <p className="text-xs my-3">{post?.description}</p>
+                  <p className="text-xs my-1">{post?.description}</p>
 
                   <div className="flex justify-between items-center">
-                    {/* <span className="flex items-center gap-2">
-                      <span className="px-2  p-1 shadow-sm">
-                        <BsHandThumbsUpFill className="text-yellow-400 " />
-                      </span>
-                      <h6 className="text-[10px]">2.3k</h6>
-                    </span> */}
+                    <span className="flex items-center gap-1">
+                      {!openReactions ? (
+                        <BsHandThumbsUpFill
+                          className="text-yellow-400 "
+                          onClick={() => setOpenReactions(true)}
+                        />
+                      ) : (
+                        reactionsTypes.map((r) => (
+                          <span
+                            className="px-2  p-1 shadow-sm text-lg"
+                            key={r.type}
+                            onClick={() => {
+                              handlePostNotification(r.type.toLowerCase());
+                              setOpenReactions(false);
+                            }}
+                          >
+                            {/* <BsHandThumbsUpFill className="text-yellow-400 " /> */}
+                            {r.emoji}
+                          </span>
+                        ))
+                      )}
+
+                      <h6 className="text-[10px]">{isLoading && "..."}</h6>
+                    </span>
                     {/* <span className="flex items-center gap-6">
                       <span className="flex item-center gap-2">
                         <BiInfoCircle />
@@ -127,16 +214,17 @@ const PostDetail = () => {
                     ))
                   : "Opps! No comments found"}
               </div>
-              {user && (
-                <div className="flex items-start justify-between my-4 mx-4 gap-2">
-                  <Avatar>
-                    {user?.first_name.toUpperCase().charAt(0) +
-                      user?.last_name.toUpperCase().charAt(0)}
-                  </Avatar>
 
-                  <CommentForm postId={post?.id} />
-                </div>
-              )}
+              <div className="flex items-start justify-between my-4 mx-4 gap-2">
+                <Avatar>
+                  {user
+                    ? user?.first_name.toUpperCase().charAt(0) +
+                      user?.last_name.toUpperCase().charAt(0)
+                    : "ANO"}
+                </Avatar>
+
+                <CommentForm postId={post?.id} />
+              </div>
             </div>
           </div>
           <div className="p-6 ">

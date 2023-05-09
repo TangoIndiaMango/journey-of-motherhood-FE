@@ -75,7 +75,10 @@ const Signin = () => {
           onClick={() => router.push("/")}
         />
         <div className="text-center flex flex-col items-center gap-4">
-          <h3 className="text-xl font-extrabold">Welcome Back!</h3>
+          <h3 className="text-[1.2rem] font-extrabold text-center mx-auto max-w-[35ch] my-5">
+            Without anything called mother every living thing would have gone to
+            extinction. Mothers birth each generation of mankind.
+          </h3>
 
           {/* <p className="">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,

@@ -41,6 +41,7 @@ const useGetRequest = <T extends any>({
       }
 
       try {
+        if (useBearerToken && !bearerToken) return;
         const response = await axios.get<T>(url, { headers });
         setData(response.data);
       } catch (error: any) {
