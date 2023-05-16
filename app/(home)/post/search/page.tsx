@@ -46,12 +46,15 @@ const SearchPost = () => {
     data: results,
     isLoading,
     isError,
-  } = useQuery(["searchResults", searchValue], async () => {
-    if (searchValue) {
+  } = useQuery(
+    ["searchResults", searchValue],
+    async () => {
+      setPage(0);
       const response = await axios.get(`${postsUrl}search/?q=${searchValue}`);
       return response.data;
-    }
-  });
+    },
+    { enabled: !!searchValue }
+  );
 
   const {
     data: topUsersData,

@@ -4,14 +4,14 @@ import React from "react";
 import { BsFacebook, BsInstagram, BsTelegram, BsTwitter } from "react-icons/bs";
 const data = [
   { title: "Company", links: ["About us", "News", "Media kit", "Contact"] },
-  {
-    title: "Resources",
-    links: ["Blog", "Newsletter", "Help Center", "Support"],
-  },
-  {
-    title: "Quick Links",
-    links: ["Overview", "Sitemap", "Gift cards", "Orders"],
-  },
+  // {
+  //   title: "Resources",
+  //   links: ["Blog", "Newsletter", "Help Center", "Support"],
+  // },
+  // {
+  //   title: "Quick Links",
+  //   links: ["Overview", "Sitemap", "Gift cards", "Orders"],
+  // },
   { title: "Social", links: ["Twitter", "Instagram", "Facebook", "Linkedin"] },
   { title: "Legal", links: ["Terms", "Privacy", "Cookies", "Licences"] },
 ];

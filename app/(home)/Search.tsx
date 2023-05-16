@@ -28,7 +28,7 @@ const SearchComponent = ({ setToggleSearchMobile }: any) => {
   return (
     <div className="w-[80%]">
       <Toaster />
-      <Search placeholder="input search text" allowClear onSearch={onSearch} />
+      <Search placeholder="Search..." allowClear onSearch={onSearch} />
     </div>
   );
 };

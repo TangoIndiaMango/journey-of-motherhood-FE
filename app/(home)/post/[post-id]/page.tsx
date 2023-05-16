@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import usePostRequest from "@/hooks/usePostRequests";
 import { toast } from "react-hot-toast";
 import useGetRequest from "@/hooks/useGetRequest";
+import ProfileModal from "./ProfileModal";
 
 const reactionsTypes = [
   { type: "Insightful", emoji: <p>&#128076;</p> },
@@ -150,27 +151,14 @@ const PostDetail = () => {
                   <div className="flex justify-between items-start w-full">
                     <div className="flex item-center flex-col gap-2 md:flex-row md:gap-[20px] w-full">
                       <h5 className="text-sm font-bold flex ">
-                        <span className="">{post?.title}</span>
+                        <span className="capitalize">{post?.title}</span>
                       </h5>
                     </div>
 
-                    <div className="w-full  flex justify-end gap-5 items-center">
-                      <Avatar>
-                        {post.author ? (
-                          <>
-                            {post?.author?.first_name.toUpperCase().charAt(0) +
-                              post?.author?.last_name.toUpperCase().charAt(0)}
-                          </>
-                        ) : (
-                          <>ANO</>
-                        )}
-                      </Avatar>
-
-                      {/* <button className="px-1 py-1 w-[70px]">Follow</button> */}
-                    </div>
+                    <ProfileModal {...post} />
                   </div>
 
-                  <p className="text-xs my-1">{post?.description}</p>
+                  <p className="text-xs my-1 capitalize">{post?.description}</p>
 
                   <div className="flex justify-between items-center">
                     <span className="flex items-center gap-1">
@@ -223,7 +211,7 @@ const PostDetail = () => {
                   : "Opps! No comments found"}
               </div>
 
-              <div className="flex items-start justify-between my-4 mx-4 gap-2">
+              <div className="flex items-start justify-between my-4 mx-4 gap-2 w-full">
                 <Avatar>
                   {user
                     ? user?.first_name.toUpperCase().charAt(0) +

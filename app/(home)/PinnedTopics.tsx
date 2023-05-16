@@ -33,7 +33,7 @@ const PinnedTopics = ({ closeMenu }: any) => {
   return (
     <div className="my-3 lg:py-5 ">
       <div className="flex items-center gap-2  lg:gap-4 mb-2 text-[12px] font-bold lg:w-[140px]">
-        <h5 className="lg:my-4">Pinned Topics ({topics.length})</h5>
+        <h5 className="lg:my-4">Forum Topics ({topics.length})</h5>
         {collapseTopics ? (
           <RxCaretDown
             className="text-2xl cursor-pointer"

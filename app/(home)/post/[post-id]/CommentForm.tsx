@@ -65,11 +65,11 @@ const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="full flex gap-6 justify-self-start items-end"
+      className="full flex gap-6 justify-self-start items-end  w-full"
     >
       <input
         type="text"
-        className="bg-gray-100 py-1  rounded-sm w-fit outline-none px-2"
+        className="bg-gray-100 py-[5px] rounded-md lg:w-[80%] outline-none px-2"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         disabled={isLoading}
@@ -77,7 +77,7 @@ const CommentForm = ({ postId }: CommentFormProps): JSX.Element => {
 
       <div className="full">
         <button
-          className="text-[8px] w-[80px] py-1 bg-[var(--primaryColor)]"
+          className="text-[10px] w-[80px] py-[5px] bg-[var(--primaryColor)]"
           type="submit"
           disabled={isLoading}
         >

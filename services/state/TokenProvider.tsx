@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { refreshUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
-import { removeToken } from "../variables";
+import { clearLocalStorage, removeToken } from "../variables";
 import { toast } from "react-hot-toast";
 
 type TokenContextProps = {
@@ -70,7 +70,8 @@ export const TokenProvider = ({ children }: TokenProviderProps) => {
           window.localStorage.setItem("refresh_token", response?.data?.refresh);
       } catch (error: any) {
         if (error.message == "Request failed with status code 401") {
-          removeToken();
+          clearLocalStorage();
+          // removeToken();
           router.push("/login");
         }
         console.error(error);
