@@ -13,6 +13,7 @@ import { Toaster, toast } from "react-hot-toast";
 // import { useSearch } from "@/services/state/SearchProvider";
 import { useQuery } from "react-query";
 import axios from "axios";
+import TopUserCard from "../TopUserCard";
 const data = [
   "Help",
   "About",
@@ -56,16 +57,6 @@ const SearchPost = () => {
     { enabled: !!searchValue }
   );
 
-  const {
-    data: topUsersData,
-    isLoading: topUsersLoading,
-    isError: topUsersError,
-  } = useQuery(["topUsersResult"], async () => {
-    const response = await axios.get(getTopUsersUrl);
-    return response?.data as ITopUser[];
-  });
-
-  if (topUsersError) console.log(topUsersError);
   const pageSize = 10;
 
   const startIndex = page * pageSize;
@@ -73,11 +64,10 @@ const SearchPost = () => {
 
   const totalPages = Math.ceil(results?.length / pageSize);
 
-  // if (topUsersError || isError) {
-  //   console.log(topUsersError || isError);
-  //   toast.error("an error occurred");
-  //   return;
-  // }
+  if (isError) {
+    console.log(isError);
+    return;
+  }
 
   if (isLoading)
     return (
@@ -97,7 +87,7 @@ const SearchPost = () => {
   }
 
   return (
-    <section className="my-5 mx-5 flex flex-col lg:flex-row gap-8 lg:mx-0 lg:px-8 ">
+    <section className="my-5 mx-5 flex flex-col lg:flex-row gap-8 lg:mx-0 lg:px-8 px-5">
       <Toaster />
       <div className="w-full lg:w-3/4">
         <>
@@ -134,25 +124,7 @@ const SearchPost = () => {
           <span className="text-xs">Start a discussion</span>
         </button>
 
-        <div className="card">
-          <h4 className="font-bold text-sm mb-5">Top Users</h4>
-          <div className="pb-4">
-            {topUsersLoading ? (
-              <Spin />
-            ) : (
-              <>
-                {topUsersData && topUsersData.length < 1
-                  ? "Opps! No Trending Topics Available"
-                  : topUsersData?.map((topUser: ITopUser) => {
-                      return <TopUsers key={topUser.id} {...topUser} />;
-                    })}
-              </>
-            )}
-          </div>
-          {/* <div className="border-t-[1px] border-gray-400">
-            <TopUsers />
-          </div> */}
-        </div>
+        <TopUserCard />
         {/* <div className="card grid grid-cols-2 gap-4 ">
           {data.map((d: string, i: number) => (
             <Link

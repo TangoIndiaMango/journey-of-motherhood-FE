@@ -13,7 +13,7 @@ const SlugContent = ({ item }: any) => {
   const { setPostValue } = usePost();
   return (
     <div
-      className="card flex justify-between border-b-[1px] border-b-gray-300 cursor-pointer gap-2"
+      className="card flex justify-between border-b-[1px] border-b-gray-300 cursor-pointer gap-2 "
       onClick={() => {
         router.push(`/post/${item.id}`);
         setPostValue(item);
@@ -31,7 +31,7 @@ const SlugContent = ({ item }: any) => {
           </Avatar>
         </div>
         <div className="">
-          <h4 className="text-sm font-bold">{item?.title}</h4>
+          <h4 className="text-sm font-bold min-w-[150px]">{item?.title}</h4>
           <h5 className="text-gray-500 text-[10px]">
             by{" "}
             {item?.user
@@ -48,7 +48,7 @@ const SlugContent = ({ item }: any) => {
               <span className="text-[11px]">121,197</span>
             </div> */}
           </div>
-          <div className="flex gap-2 item-center mt-2 w-[90%]">
+          <div className="flex gap-2 item-center mt-2 w-[100%]">
             <HashTagComponent tags={item?.tags} />
           </div>
         </div>

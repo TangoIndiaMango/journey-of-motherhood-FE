@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { BsFacebook, BsInstagram, BsTelegram, BsTwitter } from "react-icons/bs";
+import { BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
+import { FiMail } from "react-icons/fi";
 const data = [
-  { title: "Company", links: ["About us", "News", "Media kit", "Contact"] },
+  // { title: "Company", links: ["About us", "News", "Media kit", "Contact"] },
   // {
   //   title: "Resources",
   //   links: ["Blog", "Newsletter", "Help Center", "Support"],
@@ -13,7 +14,7 @@ const data = [
   //   links: ["Overview", "Sitemap", "Gift cards", "Orders"],
   // },
   { title: "Social", links: ["Twitter", "Instagram", "Facebook", "Linkedin"] },
-  { title: "Legal", links: ["Terms", "Privacy", "Cookies", "Licences"] },
+  // { title: "Legal", links: ["Terms", "Privacy", "Cookies", "Licences"] },
 ];
 
 const Footer = () => {
@@ -41,7 +42,7 @@ const Footer = () => {
         </form>
       </div>
 
-      <div className="my-10 flex flex-wrap gap-12 md:justify-between">
+      <div className="my-10 flex justify-between">
         {data.map((d, i) => (
           <div className="flex flex-col gap-2 my-4" key={`${d} + ${i}`}>
             <h6 className="text-[12px] text-gray-300">{d.title}</h6>
@@ -69,10 +70,37 @@ const Footer = () => {
           />
         </Link>
         <div className="flex items-center gap-4">
-          <BsFacebook />
-          <BsTelegram />
-          <BsInstagram />
-          <BsTwitter />
+          <a
+            href={"https://www.facebook.com/profile.php?id=100092326195038"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <BsFacebook />
+          </a>
+
+          <a
+            href={"mailto:journeyofmotherhood2@gmail.com"}
+            // target="_blank"
+            // rel="noopener noreferrer"
+          >
+            <FiMail />
+          </a>
+          <a
+            href={
+              "https://instagram.com/journeyofmotherhood2?igshid=NTc4MTIwNjQ2YQ=="
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <BsInstagram />
+          </a>
+          <a
+            href={"https://twitter.com/JourneyOfM17447?s=20"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <BsTwitter />
+          </a>
         </div>
       </div>
     </footer>

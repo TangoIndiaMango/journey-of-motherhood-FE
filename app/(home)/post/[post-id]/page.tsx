@@ -33,6 +33,7 @@ import usePostRequest from "@/hooks/usePostRequests";
 import { toast } from "react-hot-toast";
 import useGetRequest from "@/hooks/useGetRequest";
 import ProfileModal from "./ProfileModal";
+import TopUserCard from "../TopUserCard";
 
 const reactionsTypes = [
   { type: "Insightful", emoji: <p>&#128076;</p> },
@@ -157,8 +158,12 @@ const PostDetail = () => {
 
                     <ProfileModal {...post} />
                   </div>
-
-                  <p className="text-xs my-1 capitalize">{post?.description}</p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: post?.description,
+                    }}
+                    className="text-xs my-1 capitalize"
+                  />
 
                   <div className="flex justify-between items-center">
                     <span className="flex items-center gap-1">
@@ -223,13 +228,18 @@ const PostDetail = () => {
               </div>
             </div>
           </div>
-          <div className="p-6 ">
+          <div className=" flex flex-col  lg:w-[40%] gap-4 px-5">
             <button
               className="text-xs flex items-center justify-center  px-8 w-full"
               onClick={() => router.push("/post/new-discussion")}
             >
               <BsPlus /> Start discussion
             </button>
+
+            <div className="hidden lg:block">
+              <TopUserCard />
+            </div>
+
             {/* <div className="mt-3 mb-10 card">
               <h6 className="text-xs">Stats</h6>
               <div className="flex justify-between items-center my-4 px-10 lg:gap-8">

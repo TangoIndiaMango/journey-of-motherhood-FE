@@ -7,6 +7,7 @@ import { postsUrl } from "@/services/utils/url";
 import { useRouter } from "next/navigation";
 import { topics } from "@/services/constants/data";
 import { useUser } from "@/services/state/useUser";
+import { EditorComponent } from "./post/Editor";
 
 interface IData {
   title: string;
@@ -28,6 +29,7 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
   const router = useRouter();
   const [data, setData] = useState(initialState);
   const { data: response, error, isLoading, postRequest } = usePostRequest();
+  const [editorValue, setEditorValue] = useState(null);
 
   const { user } = useUser();
 
@@ -51,11 +53,16 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
       return;
     }
 
+    if (!editorValue) {
+      toast.error("Opps! you need to add a post");
+      return;
+    }
+
     postRequest({
       url: postsUrl + "create/",
       query: {
         title: data?.title,
-        description: data?.description,
+        description: editorValue,
         tags: data?.tags,
         topic: data?.topic,
         is_anonymous: data?.check ? true : false,
@@ -76,11 +83,12 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
 
   return (
     <form
-      className="py-10 w-full  lg:mt-14 lg:w-[75%] lg:mx-auto"
+      className="py-10 w-full  lg:mt-14 lg:w-[70%] lg:mx-auto px-5 lg:px-0 overflow-hidden"
       onSubmit={handleSubmit}
     >
       <Toaster />
       <h2 className="text-xl font-bold my-4">Create a Forum Discussion</h2>
+
       <div className="w-full">
         <input
           type="text"
@@ -93,14 +101,17 @@ export const StartDiscussion = ({ setStartDiscussion }: any) => {
         />
         <h6 className="text-xs my-4 text-gray-500 text-right">0/12</h6>
       </div>
-      <textarea
+      {/* <textarea
         id=""
         required
         className="h-40 w-full mb-4 px-4 py-2 text-[12px]"
         name="description"
         value={data.description}
         onChange={handleChange}
-      ></textarea>
+      ></textarea> */}
+      <div className="w-[350px] lg:w-full min-h-[200px] bg-green-200">
+        <EditorComponent setEditorValue={setEditorValue} />
+      </div>
       <div className="">
         <h5 className="text-sm font-bold">
           Tags{" "}

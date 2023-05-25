@@ -69,6 +69,15 @@ const ProfileModal: React.FC = ({ ...post }: PostData) => {
   );
 
   const showModal = () => {
+    if (!user) {
+      toast.error("Opps! Only logged in users can view author's profile");
+      return;
+    }
+    if (post?.is_anonymous || !data) {
+      toast.error("Opps! You cannot view profile of anonymous author");
+      return;
+    }
+
     setIsModalOpen(true);
   };
 
@@ -84,7 +93,7 @@ const ProfileModal: React.FC = ({ ...post }: PostData) => {
     <>
       <Toaster />
       <div
-        className="w-full  flex justify-end gap-5 items-center"
+        className="w-full  flex justify-end gap-5 items-center cursor-pointer"
         onClick={showModal}
       >
         <Avatar>

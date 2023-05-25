@@ -14,6 +14,10 @@ const ForumTopics = ({ ...item }) => {
   const router = useRouter();
   const { setPostValue } = usePost();
 
+  function reduceText(text: string, count: number) {
+    return text.slice(0, count) + (text.length > count ? "..." : "");
+  }
+
   return (
     <div
       className="card flex gap-2 border-b-[1px] border-l-gray-300 flex-col lg:flex-row cursor-pointer"
@@ -34,7 +38,12 @@ const ForumTopics = ({ ...item }) => {
         </div>
         <div className="justify-self-start  w-[80%]">
           <h3 className="text-[var(--primaryColor)]">{item?.title}</h3>
-          <p className="text-[10px]">{item?.description}</p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: reduceText(item?.description, 100),
+            }}
+            className="text-[10px]"
+          />
         </div>
       </div>
       <div className="lg:w-[15%] text-xs   mt-2 lg:mt-0 lg:border-l-gray-300 lg:border-l-[1px] ">
