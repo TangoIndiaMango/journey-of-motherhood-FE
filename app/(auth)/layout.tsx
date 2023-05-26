@@ -10,5 +10,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section className="bg-[var(--bgColor)] relative">{children}</section>;
+  return (
+    <section className="bg-[var(--bgColor)] relative ">{children}</section>
+  );
 }

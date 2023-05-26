@@ -1,8 +1,15 @@
 "use client";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const Post = () => {
-  return <div>page</div>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/");
+  }, []);
+
+  return <div>Not Available, Going back to Home Page</div>;
 };
 
 export default Post;

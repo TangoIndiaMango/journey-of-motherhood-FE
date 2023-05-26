@@ -14,7 +14,7 @@ import PostProvider from "@/services/state/PostProvider";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: true, // default: true
+      refetchOnWindowFocus: false, // default: true
     },
   },
 });
@@ -50,7 +50,7 @@ export default function HomeLayout({
             <PostProvider>
               <>
                 <Header openMenu={openMenu} setOpenMenu={setOpenMenu} />
-                <section className="flex gap-4">
+                <section className="flex gap-4 max-w-[1440px] mx-auto h-max">
                   <div className="hidden lg:block">
                     <Sidebar setOpenMenu={setOpenMenu} openMenu={openMenu} />
                   </div>

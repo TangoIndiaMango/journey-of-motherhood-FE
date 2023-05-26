@@ -80,110 +80,111 @@ const Header = ({ setOpenMenu, openMenu }: Iprops) => {
   }
 
   return (
-    <header className="w-full bg-white h-[80px] flex items-center justify-between px-10 relative">
-      <Toaster />
-      <div className="flex items-center gap-2">
-        <div className="md:hidden">
-          {openMenu ? (
-            <FiX
-              className="text-2xl cursor-pointer text-red-500"
-              onClick={() => setOpenMenu(false)}
-            />
-          ) : (
-            <FiMenu
-              className="text-2xl cursor-pointer "
-              onClick={() => setOpenMenu(true)}
-            />
-          )}
-        </div>
-        <Image
-          alt="logo"
-          src="/bg-logo.png"
-          width={"300"}
-          height={"300"}
-          className="h-[80px] w-fit object-contain cursor-pointer "
-          onClick={() => router.push("/")}
-        />
-      </div>
-      <div className="w-[50%] hidden lg:flex">
-        <SearchComponent />
-      </div>
-
-      <div
-        className={` transition ease-linear lg:hidden  ${
-          toggleSearchMobile
-            ? "absolute h-[80px] bg-white top-0 left-[0] w-screen z-50 flex items-center justify-center "
-            : "hidden"
-        }`}
-      >
-        <SearchComponent setToggleSearchMobile={setToggleSearchMobile} />
-      </div>
-
-      {user ? (
-        <div className="flex h-full items-center gap-4">
-          <BsSearch
-            className="text-gray-600 text-lg lg:hidden"
-            onClick={() => setToggleSearchMobile(true)}
+    <header className="w-full bg-white h-[80px] ">
+      <div className="max-w-[1440px] mx-auto flex items-center justify-between px-10 relative">
+        {" "}
+        <Toaster />
+        <div className="flex items-center gap-2">
+          <div className="lg:hidden">
+            {openMenu ? (
+              <FiX
+                className="text-2xl cursor-pointer text-red-500"
+                onClick={() => setOpenMenu(false)}
+              />
+            ) : (
+              <FiMenu
+                className="text-2xl cursor-pointer "
+                onClick={() => setOpenMenu(true)}
+              />
+            )}
+          </div>
+          <Image
+            alt="logo"
+            src="/bg-logo.png"
+            width={"300"}
+            height={"300"}
+            className="h-[80px] w-fit object-contain cursor-pointer "
+            onClick={() => router.push("/")}
           />
-          <div className="flex items-center gap-2 ">
-            <div className="relative cursor-pointer">
-              <Avatar
-                size={"small"}
-                onClick={() => {
-                  setOpenLogout((prev: boolean) => !prev);
-                }}
-              >
-                {user?.first_name?.toUpperCase().charAt(0) +
-                  "" +
-                  user?.last_name?.toUpperCase().charAt(0)}
-              </Avatar>
-              {openLogout && (
-                <span
-                  className="bg-gray-200 absolute -bottom-6 text-[10px] left-1/2 -translate-x-1/2 px-2 py-1"
+        </div>
+        <div className="w-[50%] hidden lg:flex">
+          <SearchComponent />
+        </div>
+        <div
+          className={` transition ease-linear lg:hidden  ${
+            toggleSearchMobile
+              ? "absolute h-[80px] bg-white top-0 left-[0] w-screen z-50 flex items-center justify-center "
+              : "hidden"
+          }`}
+        >
+          <SearchComponent setToggleSearchMobile={setToggleSearchMobile} />
+        </div>
+        {user ? (
+          <div className="flex h-full items-center gap-4">
+            <BsSearch
+              className="text-gray-600 text-lg lg:hidden"
+              onClick={() => setToggleSearchMobile(true)}
+            />
+            <div className="flex items-center gap-2 ">
+              <div className="relative cursor-pointer">
+                <Avatar
+                  size={"small"}
                   onClick={() => {
-                    clearLocalStorage();
-                    router.push("/login");
-                    setOpenLogout(false);
+                    setOpenLogout((prev: boolean) => !prev);
                   }}
                 >
-                  logout
-                </span>
-              )}
-            </div>
+                  {user?.first_name?.toUpperCase().charAt(0) +
+                    "" +
+                    user?.last_name?.toUpperCase().charAt(0)}
+                </Avatar>
+                {openLogout && (
+                  <span
+                    className="bg-gray-200 absolute -bottom-6 text-[10px] left-1/2 -translate-x-1/2 px-2 py-1"
+                    onClick={() => {
+                      clearLocalStorage();
+                      router.push("/login");
+                      setOpenLogout(false);
+                    }}
+                  >
+                    logout
+                  </span>
+                )}
+              </div>
 
-            <Badge
-              count={notificationsValue}
-              size="small"
-              className=" animate-pulse"
-            >
-              {isLoading || isLoadingNotificationPost ? (
-                <Spin />
-              ) : (
-                <BsBell
-                  className=" text-gray-600 text-xl"
-                  onClick={() => {
-                    router.push("/notifications");
-                    handlePostNotification();
-                    // setNotificationsValue(0);
-                  }}
-                />
-              )}
-            </Badge>
+              <Badge
+                count={notificationsValue}
+                size="small"
+                className=" animate-pulse"
+              >
+                {isLoading || isLoadingNotificationPost ? (
+                  <Spin />
+                ) : (
+                  <BsBell
+                    className=" text-gray-600 text-xl"
+                    onClick={() => {
+                      router.push("/notifications");
+                      handlePostNotification();
+                      // setNotificationsValue(0);
+                    }}
+                  />
+                )}
+              </Badge>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex h-full items-center gap-2">
-          <button
-            className="px-4 py-1 bg-white text-black hover:text-white"
-            onClick={() => router.push("/signup")}
-          >
-            Signup
-          </button>
-          <button className="px-4 py-1" onClick={() => router.push("/login")}>
-            Login
-          </button>
-        </div>
-      )}
+        ) : (
+          <div className="flex h-full items-center gap-2">
+            <button
+              className="px-4 py-1 bg-white text-black hover:text-white"
+              onClick={() => router.push("/signup")}
+            >
+              Signup
+            </button>
+            <button className="px-4 py-1" onClick={() => router.push("/login")}>
+              Login
+            </button>
+          </div>
+        )}
+      </div>
     </header>
   );
 };

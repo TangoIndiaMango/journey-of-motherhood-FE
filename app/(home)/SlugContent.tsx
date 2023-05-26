@@ -35,7 +35,7 @@ const SlugContent = ({ item }: any) => {
           <h5 className="text-gray-500 text-[10px]">
             by{" "}
             {item?.user
-              ? item?.user?.first_name + "" + item?.user?.last_name
+              ? item?.user?.first_name + " " + item?.user?.last_name
               : "ANO"}
           </h5>
           <div className="flex gap-1 text-gray-500 my-2 flex-col lg:flex-row lg:gap-2">

@@ -19,7 +19,7 @@ const Sidebar = ({ setOpenMenu, openMenu }: any) => {
   const { user } = useUser();
   return (
     <aside
-      className={`flex flex-col fixed left-0 top-0 w-full h-[calc(100vh)] z-10 bg-[var(--bgColor)] px-10 py-5 lg:w-1/5 lg:sticky lg:top-10 lg:min-h-[100vh_-_60px]`}
+      className={`flex flex-col fixed left-0 top-0 w-full h-max z-10 bg-[var(--bgColor)] px-10 py-5 lg:w-1/5 lg:sticky lg:top-10 lg:min-h-[100vh_-_60px]`}
     >
       <BsX
         className="text-red-500 absolute right-10 top-10 text-3xl cursor-pointer md:hidden"
