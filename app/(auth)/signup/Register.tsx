@@ -104,7 +104,7 @@ const AuthLayout = () => {
                 >
                   <option value="M">Male</option>
                   <option value="F">Female</option>
-                  <option value="O">Orders</option>
+                  <option value="O">Others</option>
                 </select>
               </div>
 
