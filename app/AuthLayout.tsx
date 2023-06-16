@@ -4,18 +4,20 @@ import Link from "next/link";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import AuthCarousel from "./AuthCarousel";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Input from "../components/Input";
-import { loginUrl, registerUrl } from "../services/utils/url";
+import { baseUrl, loginUrl, registerUrl } from "../services/utils/url";
 
 import { FormData } from "@/services/constants/types";
 import { passwordPattern } from "@/services/variables";
 import axios from "axios";
+import usePostRequest from "@/hooks/usePostRequests";
+import { toast } from "react-hot-toast";
 
-const AuthLayout = ({ loginApp = false, signup = false, password = false }) => {
+const AuthLayout = () => {
   const router = useRouter();
-  const signPassword = signup || password;
+  const pathname = usePathname();
 
   const {
     register,
@@ -33,7 +35,29 @@ const AuthLayout = ({ loginApp = false, signup = false, password = false }) => {
     }
   };
 
-  const onSubmit = async (data: FormData) => {};
+  const { data, postRequest, isLoading, error } = usePostRequest();
+
+  const url = `${baseUrl}${pathname}`;
+
+  const onSubmit = async (data: FormData) => {
+    postRequest({
+      url: url,
+      query: {
+        new_password: data.password,
+        confirm_password: data.confirm_password,
+      },
+    });
+  };
+
+  if (error) {
+    console.log(error);
+    toast.error("An Error occured, Please try again");
+  }
+
+  if (data) {
+    toast.success("Password changed successfully");
+    router.replace("/login");
+  }
 
   return (
     <section className="flex flex-col h-screen md:flex-row-reverse">
@@ -45,27 +69,12 @@ const AuthLayout = ({ loginApp = false, signup = false, password = false }) => {
           onClick={() => router.push("/")}
         />
         <div className="text-center flex flex-col items-center gap-4">
-          <h3 className="text-xl font-extrabold">Reset password</h3>
-
-          <p className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,
-            illo!
-          </p>
-          {password ? (
-            <div className="my-4"></div>
-          ) : (
-            <>
-              <span className="cursor-pointer border-[1px] border-gray-400 flex h-max items-center px-2 py-1 gap-3 w-fit rounded-2xl mt-2">
-                <FcGoogle />
-                <h6 className="text-[12px] font-bold">
-                  {loginApp && "Log in"} {signup && "Sign up"} with Google
-                </h6>
-              </span>
-              <p className="mb-2 md:mb-6">or</p>
-            </>
-          )}
+          <h3 className="text-xl font-extrabold py-3">Confirm password</h3>
         </div>
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-6 lg:min-w-[350px]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="grid gap-4 ">
             <Input
               register={register}
@@ -102,14 +111,11 @@ const AuthLayout = ({ loginApp = false, signup = false, password = false }) => {
           </div>
 
           <button type="submit" className="button">
-            <>{password && "Reset Password"}</>
+            <>{isLoading ? "Loading..." : "Confirm Password"}</>
           </button>
           <div className="text-[12px] text-gray-600 flex justify-center w-4/5 mx-auto gap-4 h-full items-center">
             <p>{"Already"} have an account?</p>
-            <Link
-              href={loginApp ? "/signup" : "/login"}
-              className="text-black font-bold"
-            >
+            <Link href={"/login"} className="text-black font-bold">
               {"Log in"}
             </Link>
           </div>

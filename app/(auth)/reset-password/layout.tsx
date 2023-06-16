@@ -8,5 +8,5 @@ export default function ResetPasswordLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main>{children}</main>;
+  return <section>{children}</section>;
 }

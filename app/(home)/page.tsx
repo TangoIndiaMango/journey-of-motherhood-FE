@@ -71,7 +71,7 @@ const Home = () => {
 
   if (newPostsError && trendingError)
     return (
-      <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+      <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 min-h-[350px]">
         <h2 className="text-red-500 text-xl w-[35ch]">
           Opps! an error as occured while loading this page, Please try again
           Later
@@ -80,7 +80,7 @@ const Home = () => {
     );
 
   return (
-    <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+    <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 min-h-[350px]">
       <div className="lg:w-3/4">
         <div className="grid gap-2">
           <div className="card grid gap-4 ">

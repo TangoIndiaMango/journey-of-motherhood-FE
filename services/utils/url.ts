@@ -2,6 +2,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const registerUrl = baseUrl + "/user/register/";
 const loginUrl = baseUrl + "/user/login/";
+const resetPasswordUrl = baseUrl + "/user/reset-password/";
 const refreshUrl = baseUrl + "/user/refresh/";
 const getQuotesUrl = baseUrl + "/quote/";
 const getAllpostsUrl = baseUrl + "/post/all/";
@@ -15,6 +16,7 @@ const getTopUsersUrl = baseUrl + "/user/topusers/";
 
 export {
   baseUrl,
+  resetPasswordUrl,
   registerUrl,
   loginUrl,
   refreshUrl,

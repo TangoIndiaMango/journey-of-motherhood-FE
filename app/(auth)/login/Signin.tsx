@@ -154,13 +154,19 @@ const Signin = () => {
             </Link>
           </div> */}
 
-          <button
-            type="submit"
-            className="button disabled:cursor-not-allowed disabled:bg-gray-500"
-            disabled={loading}
-          >
-            <>{loading ? "Loading..." : "Log in"}</>
-          </button>
+          <div className="space-y-2">
+            <Link href={"/reset-password"} className="underline">
+              Forget password
+            </Link>
+            <button
+              type="submit"
+              className="button disabled:cursor-not-allowed disabled:bg-gray-500"
+              disabled={loading}
+            >
+              <>{loading ? "Loading..." : "Log in"}</>
+            </button>
+          </div>
+
           <div className="text-[12px] text-gray-600 flex justify-center w-4/5 mx-auto gap-4 h-full items-center">
             <p>{"Don't"} have an account?</p>
             <a href={"/signup"} className="text-black font-bold">

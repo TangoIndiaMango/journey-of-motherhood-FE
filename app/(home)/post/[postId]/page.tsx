@@ -50,7 +50,6 @@ const PostDetail = ({ params }: any) => {
   const [isReacted, setIsReacted] = useState(false);
   const { setPostValue } = usePost();
 
-  console.log(params?.postId);
   // const segments = useSelectedLayoutSegments();
   const router = useRouter();
 
