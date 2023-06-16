@@ -34,14 +34,14 @@ const ResetPasswordForm = () => {
   const { data, postRequest, isLoading, error } = usePostRequest();
 
   const onSubmit = async (data: FormData) => {
-    postRequest({ url: resetPasswordUrl, query: data });
+    const updatedData = {
+      email: data.email,
+      base_url: typeof window !== "undefined" && window.location.origin,
+    };
+    postRequest({ url: resetPasswordUrl, query: updatedData });
   };
 
   if (error) console.log(error);
-  // if (data) {
-  //   const { detail }: any = data;
-  //   setResponse(detail);
-  // }
 
   return (
     <section className="flex flex-col h-screen md:flex-row-reverse">

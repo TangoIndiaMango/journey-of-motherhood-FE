@@ -11,7 +11,7 @@ type RequestParams = {
 };
 
 type Response<T> = {
-  data: T | null;
+  data: T | null | any;
   isLoading: boolean;
   error: string | null;
   postRequest: (params: RequestParams) => void;

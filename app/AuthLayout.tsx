@@ -55,8 +55,10 @@ const AuthLayout = () => {
   }
 
   if (data) {
-    toast.success("Password changed successfully");
-    router.replace("/login");
+    toast.success(data.detail);
+    if (data.detail) {
+      router.replace("/login");
+    }
   }
 
   return (
