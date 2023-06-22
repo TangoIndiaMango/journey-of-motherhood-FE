@@ -16,6 +16,8 @@ import QuoteSlider from "./Quotes";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { AiOutlinePlus } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 interface Quote {
   id: number;
@@ -36,6 +38,7 @@ interface INewPosts {
 }
 
 const Home = () => {
+  const router = useRouter();
   const {
     data: quoteData,
     isLoading: quoteLoading,
@@ -83,11 +86,19 @@ const Home = () => {
     <section className="m-10 lg:flex gap-8 lg:mx-0 lg:px-8 min-h-[350px]">
       <div className="lg:w-3/4">
         <div className="grid gap-2">
-          <div className="card grid gap-4 ">
+          <div className="">
+            <button
+              className="w-full px-12 py-2 bg-[var(--primaryColor)] transition-opacity text-white lg:w-fit flex items-center justify-center gap-3 cursor-pointer hover:opacity-90"
+              onClick={() => router.replace("/post/new-discussion")}
+            >
+              <span>New Discussion</span>
+
+              <AiOutlinePlus className="font-extrabold text-xl" />
+            </button>
+          </div>
+          <div className="card grid gap-4 shadow-md mt-5">
             <div className="w-44">
-              <div className="px-12 py-2 bg-[var(--primaryColor)] rounded-md text-white">
-                {" Quotes"}
-              </div>
+              <div className="font-bold">{" Quotes"}</div>
             </div>
             <>
               {quoteLoading ? (
@@ -105,7 +116,7 @@ const Home = () => {
               )}
             </>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 card">
             <h4 className="font-bold my-2">Forum Title</h4>
             <AllPosts />
           </div>

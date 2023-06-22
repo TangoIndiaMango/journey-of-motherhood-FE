@@ -78,7 +78,7 @@ const SearchPost = () => {
 
   if (!results || results.length < 1) {
     return (
-      <section className="my-10 mx-5 lg:flex gap-8 lg:mx-0 lg:px-8 ">
+      <section className="my-10 mx-5 lg:flex gap-8 lg:mx-0 lg:px-8  min-h-[400px]">
         <h2 className="text-sm">
           Sorry! no result for this topic, please try other topics
         </h2>
@@ -87,7 +87,7 @@ const SearchPost = () => {
   }
 
   return (
-    <section className="my-5 mx-5 flex flex-col lg:flex-row gap-8 lg:mx-0 lg:px-8 px-5">
+    <section className="my-5 mx-5 flex flex-col lg:flex-row gap-8 lg:mx-0 lg:px-8 px-5  min-h-[400px]">
       <Toaster />
       <div className="w-full lg:w-3/4">
         <>

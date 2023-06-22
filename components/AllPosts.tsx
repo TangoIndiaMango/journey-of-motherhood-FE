@@ -42,6 +42,14 @@ const AllPosts = () => {
     toast.error("an error occurred");
   }
 
+  if (data?.length < 1) {
+    return (
+      <div className="">
+        <h4>Opps! No Trending Topics Available</h4>
+      </div>
+    );
+  }
+
   return (
     <>
       {isLoading ? (

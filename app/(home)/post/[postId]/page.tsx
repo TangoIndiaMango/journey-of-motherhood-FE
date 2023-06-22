@@ -158,7 +158,7 @@ const PostDetail = ({ params }: any) => {
           <Spin />
         ) : (
           <>
-            <div className="md:flex items-start gap-2 ">
+            <div className="md:flex items-start gap-2 min-h-[400px]">
               <div className="md:flex flex-col  lg:w-[60%]">
                 <div className="p-6  card mb-4  " key={post?.id}>
                   <div className="relative ">

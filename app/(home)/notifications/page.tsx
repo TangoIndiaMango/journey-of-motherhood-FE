@@ -23,7 +23,7 @@ const NotigicationPage = () => {
   const { notificationData: data } = useStore();
 
   return (
-    <section className="px-10">
+    <section className="px-10 min-h-[400px]">
       <Toaster />
       <div className="flex justify-between items-center my-10 w-full gap-3">
         <h4 className="text-xl font-bold">Notifications</h4>
