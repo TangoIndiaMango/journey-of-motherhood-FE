@@ -35,7 +35,7 @@ const data = [
 
 const Footer = () => {
   return (
-    <footer className="p-10 bg-black text-white w-full relative">
+    <footer className="p-10 bg-black text-white w-full relative mt-5">
       <div className="max-w-[1440px] mx-auto ">
         {/* <div className="flex items-start justify-between flex-col md:flex-row">
           <div className="">

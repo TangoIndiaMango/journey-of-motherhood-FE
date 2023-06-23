@@ -111,14 +111,14 @@ const PostDetail = ({ params }: any) => {
     if (!params?.postId) {
       return;
     }
-    const response = await axios.get(`${postsUrl}comment/${params?.postId}`);
+    const response = await axios.get(`${postsUrl}comment/${params?.postId}/`);
     return response.data;
   });
 
   const { isLoading: postLoading, data: post } = useQuery(
     ["postsById", params?.postId],
     async () => {
-      const response = await axios.get(`${postsUrl}${params?.postId}`);
+      const response = await axios.get(`${postsUrl}${params?.postId}/`);
       return response.data;
     },
     {
@@ -253,12 +253,12 @@ const PostDetail = ({ params }: any) => {
                   </div>
                 </div>
               </div>
-              <div className=" flex flex-col  lg:w-[40%] gap-4 lg:px-5">
+              <div className=" flex flex-col  lg:w-[40%] gap-4 px-5">
                 <button
                   className="text-xs flex items-center justify-center  px-8 w-full"
                   onClick={() => router.replace("/post/new-discussion")}
                 >
-                  <BsPlus /> Start discussion
+                  Start discussion <BsPlus />
                 </button>
 
                 <div className="hidden lg:block">

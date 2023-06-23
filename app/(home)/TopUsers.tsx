@@ -10,7 +10,7 @@ const checkGender = (gender: string) => {
 
 const TopUsers = ({ ...topUser }: ITopUser) => {
   return (
-    <div className="flex justify-between items-center my-4  min-h-[400px]">
+    <div className="flex justify-between items-center my-4">
       <div className="flex gap-2 items-center">
         <div
           className={`w-4 h-4 rounded-full ${checkGender(topUser.gender)}`}
