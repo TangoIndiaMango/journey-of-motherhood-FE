@@ -120,11 +120,13 @@ const SearchPost = () => {
           className="flex items-center gap-2 justify-center  px-4"
           onClick={() => router.push("/post/new-discussion")}
         >
+          <span className="text-xs">Start discussion</span>{" "}
           <BsPlus className="text-white text-xl " />
-          <span className="text-xs">Start a discussion</span>
         </button>
 
-        <TopUserCard />
+        <div className="h-fit">
+          <TopUserCard />
+        </div>
         {/* <div className="card grid grid-cols-2 gap-4 ">
           {data.map((d: string, i: number) => (
             <Link

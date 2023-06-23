@@ -261,7 +261,7 @@ const PostDetail = ({ params }: any) => {
                   Start discussion <BsPlus />
                 </button>
 
-                <div className="hidden lg:block">
+                <div className="hidden lg:block h-fit">
                   <TopUserCard />
                 </div>
 

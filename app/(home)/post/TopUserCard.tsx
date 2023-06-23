@@ -20,7 +20,7 @@ const TopUserCard = () => {
 
   if (topUsersError) console.log(topUsersError);
   return (
-    <div className="card">
+    <div className="card h-fit">
       <h4 className="font-bold text-sm mb-5">Top Users</h4>
       <div className="pb-4">
         {topUsersLoading ? (
