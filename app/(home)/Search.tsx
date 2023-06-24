@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearch } from "@/services/state/SearchProvider";
 import { Toaster, toast } from "react-hot-toast";
+import { useStore } from "@/services/state/zustand-store/store";
 
 const SearchComponent = ({ setToggleSearchMobile }: any) => {
   const router = useRouter();
   const { setSearchValue } = useSearch();
+  const setFromPinnedTopic = useStore((state) => state.setFromPinnedTopic);
 
   const onSearch = async (value: string) => {
     if (value?.length > 0) {
       setSearchValue(value);
+      setFromPinnedTopic(false);
       router.push(`/post/search?q=${value}`);
 
       if (setToggleSearchMobile) {

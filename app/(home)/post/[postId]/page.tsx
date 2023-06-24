@@ -185,7 +185,7 @@ const PostDetail = ({ params }: any) => {
                         dangerouslySetInnerHTML={{
                           __html: post?.description,
                         }}
-                        className="text-xs my-1 capitalize"
+                        className="text-xs my-1 capitalize leading-7"
                       />
 
                       <div className="flex justify-between items-center">

@@ -8,6 +8,8 @@ interface StoreState {
   setNotificationsValue: (value: number) => void;
   notificationData: INotification[] | null;
   setNotificationData: (data: INotification[]) => void;
+  fromPinnedTopic: boolean;
+  setFromPinnedTopic: (topic: boolean) => void;
 }
 
 export const useStore = create<StoreState>()((set) => ({
@@ -15,4 +17,6 @@ export const useStore = create<StoreState>()((set) => ({
   setNotificationsValue: (value) => set({ notificationsValue: value }),
   notificationData: null,
   setNotificationData: (data) => set({ notificationData: data }),
+  fromPinnedTopic: false,
+  setFromPinnedTopic: (topic) => set({ fromPinnedTopic: topic }),
 }));

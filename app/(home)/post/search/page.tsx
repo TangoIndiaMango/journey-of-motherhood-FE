@@ -7,13 +7,18 @@ import SlugContent from "../../SlugContent";
 import TopUsers from "../../TopUsers";
 import { useEffect, useState } from "react";
 import useGetRequest from "@/hooks/useGetRequest";
-import { getTopUsersUrl, postsUrl } from "@/services/utils/url";
+import {
+  getSpecificTopicsUrl,
+  getTopUsersUrl,
+  postsUrl,
+} from "@/services/utils/url";
 import { Spin } from "antd";
 import { Toaster, toast } from "react-hot-toast";
 // import { useSearch } from "@/services/state/SearchProvider";
 import { useQuery } from "react-query";
 import axios from "axios";
 import TopUserCard from "../TopUserCard";
+import { useStore } from "@/services/state/zustand-store/store";
 const data = [
   "Help",
   "About",
@@ -37,6 +42,8 @@ export interface ITopUser {
 
 const SearchPost = () => {
   const [page, setPage] = useState(0);
+
+  const fromPinnedTopic = useStore((state) => state.fromPinnedTopic);
   // const { searchValue } = useSearch();
   const router = useRouter();
   const searchQuery = useSearchParams();
@@ -51,7 +58,10 @@ const SearchPost = () => {
     ["searchResults", searchValue],
     async () => {
       setPage(0);
-      const response = await axios.get(`${postsUrl}search/?q=${searchValue}`);
+      const url = fromPinnedTopic
+        ? `${getSpecificTopicsUrl}/${searchValue?.toUpperCase()}/`
+        : `${postsUrl}search/?q=${searchValue}`;
+      const response = await axios.get(url);
       return response.data;
     },
     { enabled: !!searchValue }

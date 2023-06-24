@@ -13,6 +13,7 @@ const getNewPostsUrl = postsUrl + "new/";
 const getTrendingPostsUrl = postsUrl + "trending/";
 const getPopularPostsUrl = postsUrl + "popular/";
 const getTopUsersUrl = baseUrl + "/user/topusers/";
+const getSpecificTopicsUrl = postsUrl + "topic";
 
 export {
   baseUrl,
@@ -29,4 +30,5 @@ export {
   getTrendingPostsUrl,
   getPopularPostsUrl,
   getTopUsersUrl,
+  getSpecificTopicsUrl,
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { topics } from "@/services/constants/data";
+import { useStore } from "@/services/state/zustand-store/store";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
@@ -12,6 +13,8 @@ const PinnedTopics = ({ closeMenu }: any) => {
   const pathname = searchParam.get("q");
   const [collapseTopics, setCollapseTopics] = useState(true);
 
+  const setFromPinnedTopic = useStore((state) => state.setFromPinnedTopic);
+
   const navItems = topics.map((d) => {
     return (
       <Link
@@ -20,7 +23,10 @@ const PinnedTopics = ({ closeMenu }: any) => {
         className={`asideLink my-1 text-[10px] lg:text-[12px] leading-tight lg:leading-relaxed ${
           pathname == String(d.abbr.toLowerCase()) && "asideActive"
         }`}
-        onClick={closeMenu}
+        onClick={() => {
+          closeMenu();
+          setFromPinnedTopic(true);
+        }}
       >
         <span
           className={`w-2 h-2 rounded-full `}
