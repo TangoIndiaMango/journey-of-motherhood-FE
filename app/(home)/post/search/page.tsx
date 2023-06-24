@@ -48,7 +48,7 @@ const SearchPost = () => {
   const router = useRouter();
   const searchQuery = useSearchParams();
   const searchValue = searchQuery.get("q");
-  // console.log(searchQuery.get("q"));
+  console.log(fromPinnedTopic);
 
   const {
     data: results,
